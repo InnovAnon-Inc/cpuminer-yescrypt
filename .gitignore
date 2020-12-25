@@ -1,5 +1,6 @@
 minerd*
 cpuminer
+cpuminer.bkf
 cpuminer.unstripped
 cpuminer.unpacked
 *.exe
