@@ -57,19 +57,20 @@ Build
    ```
 #### Profile-Guided Optimizations (TODO sudo necessary?)
  * `./build.sh PGO-1`
- * `sudo ./cpuminer -a yescrypt -o stratum+tcp://lmaddox.chickenkiller.com:3333`
+ * `sudo ./cpuminer [-o <url>]`
  * `./build.sh PGO-2`
  * refer to the CIS configs (.travis.yml) for more information.
 
 #### AutoFDO (TODO)
  * `./build.sh FDO-1`
- * `sudo ./cpuminer -a yescrypt -o stratum+tcp://lmaddox.chickenkiller.com:3333 && P="$!"`
+ * `sudo ./cpuminer [-o <url>]`
  * `perf record -e br_inst_retired:near_taken -b -o /tmp/cpuminer-multi-perf.data -p "$P"`
  * `create_gcov --binary="$PWD/cpuminer" --profile=/tmp/cpuminer-multi-perf.data --gcov=/tmp/cpuminer-multi-profile.afdo`
  * `./build.sh FDO-2`
 
 #### Basic *nix build instructions:
  * just use `./build.sh`
+ * run the program `./cpuminer`
 
 _OR_
 
@@ -139,6 +140,8 @@ _OR_
      * Mac OS X added AVX support in the 10.6.8 update.
      * Windows supports AVX starting from Windows 7 SP1 and Windows Server 2008 R2 SP1.
    * The configure script outputs a warning if the assembler doesn't support some instruction sets. In that case, the miner can still be built, but unavailable optimizations are left off.
+ * PPC:
+   * It's been hacked to compile on PPC. No special optimizations. See build.sh for more information.
 
 Usage instructions
 ==================
@@ -174,3 +177,5 @@ CPUMiner-multi was forked from pooler's CPUMiner, and has been started by Lucas 
 License
 =======
 GPLv2.  See COPYING for details.
+Modifications since forking are in the public domain.
+

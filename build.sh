@@ -11,7 +11,11 @@ fi
 [[ ! -f cpuminer ]] ||
 mv -v cpuminer{,.bkf}
 
-make clean || echo clean
+if [[ "$1" = PGO-1 ]] ; then
+  make distclean || echo clean
+else
+  make clean # || echo clean
+fi
 
 rm -f config.status Makefile.in
 ./autogen.sh
@@ -28,10 +32,10 @@ if [[ "$1" = PGO-1 ]] ; then
   # extracflags="-O3 -march=native -Wall -D_REENTRANT -funroll-loops -fvariable-expansion-in-unroller -fmerge-all-constants -fbranch-target-load-optimize2 -fsched2-use-superblocks -falign-loops=16 -falign-functions=16 -falign-jumps=16 -falign-labels=16"
 
   # Debian 7.7 / Ubuntu 14.04 (gcc 4.7+)
-# TODO
   extracflags="$extracflags -Ofast -flto -fuse-linker-plugin -ftree-loop-if-convert-stores"
   extracflags="$extracflags -D_REENTRANT -funroll-loops -fvariable-expansion-in-unroller -fmerge-all-constants -fbranch-target-load-optimize2 -fsched2-use-superblocks -falign-loops=16 -falign-functions=16 -falign-jumps=16 -falign-labels=16"
   extracflags="$extracflags $ARCH -g0 -Ofast -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants -fipa-pta -floop-nest-optimize -fgraphite-identity -floop-parallelize-all"
+  #extracflags="-g -O0"
   if (( $# >= 2 )) && [[ "$2" = 7450 ]] ; then
     PGFLAGS="-fprofile-generate=/tmp/cpuminer-multi.gcda -fipa-profile -fprofile-reorder-functions -fvpt -fprofile -fprofile-arcs -fprofile-dir=/tmp/cpuminer-multi"
     CPPFLAGS='-DNOASM'
@@ -92,5 +96,4 @@ elif [[ "$1" = PGO-2 ]] ; then
   upx --all-filters --ultra-brute cpuminer
 
 else exit 1 ; fi
-
 

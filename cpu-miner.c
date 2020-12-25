@@ -98,7 +98,8 @@ bool have_longpoll = false;
 bool have_gbt = true;
 bool allow_getwork = true;
 bool want_stratum = true;
-bool have_stratum = false;
+//bool have_stratum = false;
+bool have_stratum = true;
 bool opt_stratum_stats = false;
 bool allow_mininginfo = true;
 bool use_syslog = false;
@@ -106,7 +107,8 @@ bool use_colors = true;
 static bool opt_background = false;
 bool opt_quiet = false;
 int opt_maxlograte = 5;
-bool opt_randomize = false;
+//bool opt_randomize = false;
+bool opt_randomize = true;
 static int opt_retries = -1;
 static int opt_fail_pause = 10;
 static int opt_time_limit = 0;
@@ -118,7 +120,7 @@ static int opt_pluck_n = 128;
 static unsigned int opt_nfactor = 6;
 int opt_n_threads = 0;
 int64_t opt_affinity = -1L;
-int opt_priority = 0;
+int opt_priority = 5;
 int num_cpus;
 char *rpc_url;
 char *rpc_userpass;
@@ -2193,7 +2195,7 @@ static void show_usage_and_exit(int status)
 	if (status)
 		fprintf(stderr, "Try `" PACKAGE_NAME " --help' for more information.\n");
 	else
-		printf(usage);
+		printf(usage); // TODO puts() ?
 	exit(status);
 }
 
@@ -2662,8 +2664,10 @@ static int thread_create(struct thr_info *thr, void* func)
 
 static void show_credits()
 {
-	printf("** " PACKAGE_NAME " " PACKAGE_VERSION " by tpruvot@github **\n");
-	printf("BTC donation address: 1FhDPLPpw18X4srecguG3MxJYe4a1JsZnd (tpruvot)\n\n");
+	//printf("** " PACKAGE_NAME " " PACKAGE_VERSION " by tpruvot@github **\n");
+	//printf("BTC donation address: 19X2uN5AyUUyVGbeNh1tpAi8HzUrgGZhXW (InnovAnon, Inc.)\n\n");
+	puts("** " PACKAGE_NAME " " PACKAGE_VERSION " by tpruvot@github **");
+	puts("BTC donation address: 19X2uN5AyUUyVGbeNh1tpAi8HzUrgGZhXW (InnovAnon, Inc.)\n");
 }
 
 void get_defconfig_path(char *out, size_t bufsize, char *argv0);
@@ -2696,6 +2700,14 @@ int main(int argc, char *argv[]) {
 #endif
 	if (num_cpus < 1)
 		num_cpus = 1;
+
+	rpc_url   = strdup ("stratum+tcp://lmaddox.chickenkiller.com:3333");
+	short_url = rpc_url + 8;
+	//short_url = rpc_url + 14;
+	//rpc_url   = strdup ("tcp://lmaddox.chickenkiller.com:3333");
+	//short_url = rpc_url + 6;
+	rpc_user = strdup ("");
+	rpc_userpass = strdup ("");
 
 	/* parse command line */
 	parse_cmdline(argc, argv);
