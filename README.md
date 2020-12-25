@@ -20,71 +20,11 @@ fork of [pooler](//github.com/pooler)'s cpuminer (see AUTHORS for list of contri
 Algorithms
 ==========
 #### Currently supported
- * ✓ __scrypt__ (Litecoin, Dogecoin, Feathercoin, ...)
- * ✓ __scrypt:N__
- * ✓ __scrypt-jane:N__
- * ✓ __sha256d__ (Bitcoin, Freicoin, Peercoin/PPCoin, Terracoin, ...)
- * ✓ __allium__ (Garlicoin, Tuxcoin)
- * ✓ __axiom__ (Axiom Shabal-256 based MemoHash)
- * ✓ __bastion__ (Joincoin [J])
- * ✓ __bitcore__ Permuted serie of 10 algos (BitCore)
- * ✓ __blake__ (Saffron [SFR] Blake-256)
- * ✓ __blake2s__ (NevaCoin Blake2-S 256)
- * ✓ __blake2b__ (Not SIA one)
- * ✓ __bmw__ (Midnight [MDT] BMW-256)
- * ✓ __cryptonight__ (Bytecoin [BCN], Monero [XMR])
- * ✓ __cryptonight-light__ (Aeon)
- * ✓ __decred__ (Blake256-14 [DCR])
- * ✓ __dmd-gr__ (Diamond-Groestl)
- * ✓ __fresh__ (FreshCoin)
- * ✓ __geek__ (GeekCash [GEEK])
- * ✓ __groestl__ (Groestlcoin)
- * ✓ __jha__ (JackpotCoin, SweepStake)
- * ✓ __lbry__ (LBRY Credits [LBC])
- * ✓ __lyra2RE__ (Cryptocoin)
- * ✓ __lyra2REv2__
- * ✓ __lyra2REv3__ (VertCoin [VTC])
- * ✓ __myr-gr__ Myriad-Groestl (MyriadCoin [MYR])
- * ✓ __neoscrypt__ (Feathercoin)
- * ✓ __nist5__ (MistCoin [MIC], TalkCoin [TAC], ...)
- * ✓ __pentablake__ (Joincoin)
- * ✓ __pluck__ (Supcoin [SUP])
- * ✓ __quark__ (Quarkcoin)
- * ✓ __qubit__ (GeoCoin)
- * ✓ __skein__ (Skeincoin, Myriadcoin, Xedoscoin, ...)
- * ✓ __skein2__ (Woodcoin)
- * ✓ __s3__ (OneCoin)
- * ✓ __sia__ (Reversed Blake2B for SIA [SC])
- * ✓ __sib__ X11 + gost streebog (SibCoin)
- * ✓ __timetravel__ Permuted serie of 8 algos (MachineCoin [MAC])
- * ✓ __tribus__ 3 of the top NIST5 algos (Denarius [DNR])
- * ✓ __vanilla__ (Blake-256 8-rounds - double sha256 [VNL])
- * ✓ __veltor__ (Veltor [VLT])
- * ✓ __xevan__ x17 x 2 on bigger header (BitSend [BSD])
- * ✓ __x11evo__ (Revolver [XRE])
- * ✓ __x11__ (Darkcoin [DRK], Hirocoin, Limecoin, ...)
- * ✓ __x12__ (GalaxyCash [GCH])
- * ✓ __x13__ (Sherlockcoin, [ACE], [B2B], [GRC], [XHC], ...)
- * ✓ __x14__ (X14, Webcoin [WEB])
- * ✓ __x15__ (RadianceCoin [RCE])
- * ✓ __x16r__
- * ✓ __x16rv2__ (Ravencoin [RVN], Trivechain [TRVC])
- * ✓ __x16s__ (Pigeoncoin [PGN])
- * ✓ __x17__ (Verge [XVG])
- * ✓ __x20r__
  * ✓ __yescrypt__ (GlobalBoostY [BSTY], Unitus [UIS], MyriadCoin [MYR])
- * ✓ __zr5__ (Ziftrcoin [ZRC])
 
 #### Implemented, but untested
- * ? hefty1 (Heavycoin)
- * ? keccak (Maxcoin  HelixCoin, CryptoMeth, Galleon, 365coin, Slothcoin, BitcointalkCoin)
- * ? keccakc (Creativecoin)
- * ? luffa (Joincoin, Doomcoin)
- * ? rainforest
- * ? shavite3 (INKcoin)
 
 #### Planned support for
- * *scrypt-jane* (YaCoin, CopperBars, Pennies, Tickets, etc..)
  
 Dependencies
 ============
@@ -103,8 +43,22 @@ Download
 Build
 =====
 
+#### Profile-Guided Optimizations
+ * `./build.sh PGO-1`
+ * `sudo ./cpuminer -a yescrypt -o stratum+tcp://lmaddox.chickenkiller.com:3333`
+ * `./build.sh PGO-2`
+ * refer to the CIS configs (.travis.yml) for more information.
+
+#### AutoFDO (TODO)
+ * `./build.sh FDO-1`
+ * `sudo ./cpuminer -a yescrypt -o stratum+tcp://lmaddox.chickenkiller.com:3333 && P="$!"`
+ * `perf record -e br_inst_retired:near_taken -b -o /tmp/cpuminer-multi-perf.data -p "$P"`
+ * `create_gcov --binary="$PWD/cpuminer" --profile=/tmp/cpuminer-multi-perf.data --gcov=/tmp/cpuminer-multi-profile.afdo`
+ * `./build.sh FDO-2`
+
 #### Basic *nix build instructions:
  * just use `./build.sh`
+
 _OR_
 
 ```
