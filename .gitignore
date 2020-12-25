@@ -53,6 +53,16 @@ sign.sh
 
 compat/curl-for-windows/
 
+# PGO
 *.gcno
+*.gcda/
+
+# FDO
+*perf.data
+
+# IDE
 *.vcxproj.filters
 *.vcxproj
+#*~
+*.swp
+
