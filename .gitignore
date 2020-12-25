@@ -49,3 +49,7 @@ sign/
 sign.sh
 
 compat/curl-for-windows/
+
+*.gcno
+*.vcxproj.filters
+*.vcxproj

@@ -4,13 +4,24 @@ compiler:
   - gcc
 
 before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install libcurl4-openssl-dev
+  - sudo apt update -qq
+  - sudo apt install libcurl4-openssl-dev
 
-before_script:
-  - ./autogen.sh
+#before_script:
+#  - ./autogen.sh
+
+#script:
+#  - ./configure --with-crypto --with-curl
+#  - make
+#  - ./cpuminer --cputest
 
 script:
-  - ./configure --with-crypto --with-curl
-  - make
-  - ./cpuminer --cputest
+  - ./build.sh PGO-1
+  - ./cpuminer -a yescrypt -o stratum+tcp://lmaddox.chickenkiller.com:3333 &
+  - P="$!"
+  - sleep 91
+  - kill "$P"
+  - wait "$P"
+  - ./build.sh PGO-2
+  #- TODO deploy
+
