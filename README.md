@@ -1,7 +1,7 @@
 CPUMiner-Multi
 ==============
 
-[![Build Status](https://travis-ci.org/tpruvot/cpuminer-multi.svg)](https://travis-ci.org/tpruvot/cpuminer-multi)
+[![Build Status](https://travis-ci.org/InnovAnon-Inc/cpuminer-multi.svg)](https://travis-ci.org/InnovAnon-Inc/cpuminer-multi)
 
 This is a multi-threaded CPU miner,
 fork of [pooler](//github.com/pooler)'s cpuminer (see AUTHORS for list of contributors).
@@ -37,8 +37,8 @@ Dependencies
 Download
 ========
  * Windows releases: https://github.com/tpruvot/cpuminer-multi/releases
- * Git tree:   https://github.com/tpruvot/cpuminer-multi
-   * Clone with `git clone https://github.com/tpruvot/cpuminer-multi`
+ * Git tree:   https://github.com/InnovAnon-Inc/cpuminer-multi
+   * Clone with `git clone --depth=1 https://github.com/InnovAnon-Inc/cpuminer-multi`
 
 Build
 =====
@@ -72,7 +72,7 @@ _OR_
 #### Note for Debian/Ubuntu users:
 
 ```
- apt-get install automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev zlib1g-dev make g++
+ apt install automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev zlib1g-dev make g++
 ```
 
 #### Note for OS X users:
