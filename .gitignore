@@ -1,5 +1,7 @@
 minerd*
 cpuminer
+cpuminer.unstripped
+cpuminer.unpacked
 *.exe
 *.o
 *.d

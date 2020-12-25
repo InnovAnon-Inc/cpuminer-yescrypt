@@ -43,7 +43,19 @@ Download
 Build
 =====
 
-#### Profile-Guided Optimizations
+#### System Administration (TODO necessary?)
+ * ```
+   cat >> /etc/sysctl.conf << EOF
+   # ----- BEGIN cpuminer-yescrypt config -----
+   # some crypto algos run faster
+   vm.nr_huge_pages = $(nproc)
+   # perf/autofdo
+   kernel.perf_event_paranoid = -1
+   # ----- END cpuminer-yescrypt config -----
+   EOF
+   sysctl -p
+   ```
+#### Profile-Guided Optimizations (TODO sudo necessary?)
  * `./build.sh PGO-1`
  * `sudo ./cpuminer -a yescrypt -o stratum+tcp://lmaddox.chickenkiller.com:3333`
  * `./build.sh PGO-2`
