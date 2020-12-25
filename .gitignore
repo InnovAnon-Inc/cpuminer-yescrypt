@@ -1,13 +1,17 @@
+# bins
 minerd*
 cpuminer
 cpuminer.bkf
 cpuminer.unstripped
 cpuminer.unpacked
 *.exe
+
+# tmp files
 *.o
 *.d
 gmon.out
 
+# autotools
 autom4te.cache
 .deps
 
@@ -63,6 +67,6 @@ compat/curl-for-windows/
 # IDE
 *.vcxproj.filters
 *.vcxproj
-#*~
+*~
 *.swp
 
