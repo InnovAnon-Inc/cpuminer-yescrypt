@@ -43,34 +43,10 @@ Download
 Build
 =====
 
-#### System Administration (TODO necessary?)
- * ```
-   cat >> /etc/sysctl.conf << EOF
-   # ----- BEGIN cpuminer-yescrypt config -----
-   # some crypto algos run faster
-   vm.nr_huge_pages = $(nproc)
-   # perf/autofdo
-   kernel.perf_event_paranoid = -1
-   # ----- END cpuminer-yescrypt config -----
-   EOF
-   sysctl -p
-   ```
-#### Profile-Guided Optimizations (TODO sudo necessary?)
- * `./build.sh PGO-1`
- * `sudo ./cpuminer [-o <url>]`
- * `./build.sh PGO-2`
- * refer to the CIS configs (.travis.yml) for more information.
-
-#### AutoFDO (TODO)
- * `./build.sh FDO-1`
- * `sudo ./cpuminer [-o <url>]`
- * `perf record -e br_inst_retired:near_taken -b -o /tmp/cpuminer-multi-perf.data -p "$P"`
- * `create_gcov --binary="$PWD/cpuminer" --profile=/tmp/cpuminer-multi-perf.data --gcov=/tmp/cpuminer-multi-profile.afdo`
- * `./build.sh FDO-2`
-
 #### Basic *nix build instructions:
  * just use `./build.sh`
  * run the program `./cpuminer`
+ * refer to the CIS configs (.travis.yml) for more information.
 
 _OR_
 
@@ -81,6 +57,62 @@ _OR_
  # Use -march=native if building for a single machine
  make
 ```
+
+#### System Administration (Optional)
+ * Ephemeral settings
+   ```
+    sysctl -w vm.nr_huge_pages=$(nproc) # TBH, I think this is for RandomX
+    sysctl -w kernel.perf_event_paranoid=-1 # for AutoFDO
+   ```
+ * Persistent settings
+   ```
+    cat >> /etc/sysctl.conf << EOF
+    # ----- BEGIN cpuminer-yescrypt config -----
+    # some crypto algos run faster
+    vm.nr_huge_pages = $(nproc)
+    # perf/autofdo
+    kernel.perf_event_paranoid = -1
+    # ----- END cpuminer-yescrypt config -----
+    EOF
+    sysctl -p
+   ```
+
+#### Profile-Guided Optimizations
+ PGOs offer an average of ~60% speedup for applications.
+ (TODO sudo necessary?)
+ * Compile the program with code coverage instrumentation.
+   This binary may be a little slower and fatter.
+   ```
+    ./build.sh PGO-1
+   ```
+ * Run the program under "normal conditions" for some time.
+   ```
+    sudo ./cpuminer [-o <url>]
+   ```
+ * Recompile the program using the generated profiles.
+   ```
+     sudo chown -R $UID /tmp/cpuminer-multi.gcda
+     ./build.sh PGO-2
+   ```
+
+#### AutoFDO (TODO)
+ FDOs are said to be superior to PGOs.
+ * just use `./build.sh`
+ * Run the program under "normal conditions" for some time.
+   ```
+    sudo ./cpuminer [-o <url>] & P="$!"
+   ```
+ * Collect performance counter information.
+   ```
+    sudo perf record -e br_inst_retired:near_taken -b -o /tmp/cpuminer-multi-perf.data -p "$P"
+   ```
+ * Convert the perf.data format into profile.afdo format,
+   and recompile the program using the collected performance metrics.
+   ```
+    sudo chown -R $UID /tmp/cpuminer-multi-perf.data
+    create_gcov --binary="$PWD/cpuminer" --profile=/tmp/cpuminer-multi-perf.data --gcov=/tmp/cpuminer-multi-profile.afdo
+    ./build.sh FDO-2
+   ```
 
 #### Note for Debian/Ubuntu users:
 
