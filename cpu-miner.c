@@ -2118,7 +2118,7 @@ static void show_version_and_exit(void)
 	 "with GCC ");
 	printf("%d.%d.%d", __GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__);
 #endif
-	printf(" the " __DATE__ "\n");
+	//printf(" the " __DATE__ "\n");
 
 	// Note: if compiled with cpu opts (instruction sets),
 	// the binary is no more compatible with older ones!
