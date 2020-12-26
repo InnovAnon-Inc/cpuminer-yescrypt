@@ -2122,6 +2122,7 @@ static void show_version_and_exit(void)
 
 	// Note: if compiled with cpu opts (instruction sets),
 	// the binary is no more compatible with older ones!
+/*
 	printf(" compiled for"
 #if defined(__ARM_NEON__)
 		" ARM NEON"
@@ -2141,7 +2142,7 @@ static void show_version_and_exit(void)
 		" general use"
 #endif
 		"\n");
-
+*/
 	printf(" config features:"
 #if defined(USE_ASM) && defined(__i386__)
 		" i386"
