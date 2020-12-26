@@ -2111,6 +2111,7 @@ out:
 
 static void show_version_and_exit(void)
 {
+/*
 	printf(" built "
 #ifdef _MSC_VER
 	 "with VC++ %d", msver());
@@ -2118,6 +2119,7 @@ static void show_version_and_exit(void)
 	 "with GCC ");
 	printf("%d.%d.%d", __GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__);
 #endif
+*/
 	//printf(" the " __DATE__ "\n");
 
 	// Note: if compiled with cpu opts (instruction sets),
@@ -2182,7 +2184,6 @@ static void show_version_and_exit(void)
 		"\n\n");
 */
 	/* dependencies versions */
-/*
 	printf("%s\n", curl_version());
 #ifdef JANSSON_VERSION
 	printf("jansson/%s ", JANSSON_VERSION);
@@ -2191,7 +2192,6 @@ static void show_version_and_exit(void)
 	printf("pthreads/%d.%d.%d.%d ", PTW32_VERSION);
 #endif
 	printf("\n");
-*/
 	exit(0);
 }
 

@@ -4,6 +4,8 @@ cpuminer
 cpuminer.bkf
 cpuminer.unstripped
 cpuminer.unpacked
+cpuminer.pgo
+cpuminer.fdo
 *.exe
 
 # tmp files
