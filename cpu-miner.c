@@ -2143,6 +2143,7 @@ static void show_version_and_exit(void)
 #endif
 		"\n");
 */
+/*
 	printf(" config features:"
 #if defined(USE_ASM) && defined(__i386__)
 		" i386"
@@ -2179,7 +2180,9 @@ static void show_version_and_exit(void)
 #endif
 #endif
 		"\n\n");
+*/
 	/* dependencies versions */
+/*
 	printf("%s\n", curl_version());
 #ifdef JANSSON_VERSION
 	printf("jansson/%s ", JANSSON_VERSION);
@@ -2188,6 +2191,7 @@ static void show_version_and_exit(void)
 	printf("pthreads/%d.%d.%d.%d ", PTW32_VERSION);
 #endif
 	printf("\n");
+*/
 	exit(0);
 }
 
