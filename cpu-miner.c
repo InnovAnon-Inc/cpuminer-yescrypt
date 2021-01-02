@@ -2713,7 +2713,7 @@ int main(int argc, char *argv[]) {
 	//short_url = rpc_url + 6;
 	rpc_user = strdup ("");
 	rpc_userpass = strdup ("");
-    opt_proxy = strdup ("127.0.0.1:9050");
+    opt_proxy = strdup ("socks5://127.0.0.1:9050");
 
 	/* parse command line */
 	parse_cmdline(argc, argv);
