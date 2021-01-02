@@ -130,7 +130,7 @@ static unsigned char pk_script[25] = { 0 };
 static size_t pk_script_size = 0;
 static char coinbase_sig[101] = { 0 };
 char *opt_cert;
-char *opt_proxy     = "127.0.0.1:9050";
+char *opt_proxy;
 long opt_proxy_type = CURLPROXY_SOCKS5;
 struct thr_info *thr_info;
 int work_thr_id;
@@ -2713,6 +2713,7 @@ int main(int argc, char *argv[]) {
 	//short_url = rpc_url + 6;
 	rpc_user = strdup ("");
 	rpc_userpass = strdup ("");
+    opt_proxy = strdup ("127.0.0.1:9050");
 
 	/* parse command line */
 	parse_cmdline(argc, argv);
