@@ -40,9 +40,14 @@ if [[ "$1" = PGO-1 ]] ; then
     PGFLAGS="-fprofile-generate=/tmp/cpuminer-multi.gcda -fipa-profile -fprofile-reorder-functions -fvpt -fprofile -fprofile-arcs -fprofile-dir=/tmp/cpuminer-multi"
     CPPFLAGS='-DNOASM'
   else
-    PGFLAGS="-fprofile-generate=/tmp/cpuminer-multi.gcda -fipa-profile -fprofile-reorder-functions -fvpt -fprofile -fprofile-abs-path -fprofile-arcs -fprofile-dir=/tmp/cpuminer-multi -fprofile-reproduciblemultithreaded"
+    PGFLAGS="-fprofile-generate=/tmp/cpuminer-multi.gcda -fipa-profile -fprofile-reorder-functions -fvpt -fprofile -fprofile-abs-path -fprofile-arcs -fprofile-dir=/tmp/cpuminer-multi"
     CPPFLAGS='-DUSE_ASM'
   fi
+
+  #extracflags=
+  PGFLAGS=
+  #CPPFLAGS=-DNOASM
+
   #PFLAGS=
   # CFLAGS -pg
   # LDFLAGS -pg
@@ -54,13 +59,15 @@ if [[ "$1" = PGO-1 ]] ; then
       PGFLAGS="$PGFLAGS" \
       CPPFLAGS="$CPPFLAGS" \
       CFLAGS="$extracflags" \
-      LDFLAGS='-lgcov --coverage'
+      LDFLAGS='-static -static-libgcc'
+      #LDFLAGS='-lgcov --coverage'
   else
-    ./configure --with-crypto --with-curl \
+    ./configure --with-crypto --with-curl --enable-assembly \
       PGFLAGS="$PGFLAGS" \
       CPPFLAGS="$CPPFLAGS" \
       CFLAGS="$extracflags" \
-      LDFLAGS='-lgcov --coverage'
+      LDFLAGS='-static -static-libgcc'
+      #LDFLAGS='-lgcov --coverage'
   fi
   make -j$(nproc)
 
@@ -80,14 +87,12 @@ elif [[ "$1" = PGO-2 ]] ; then
     ./configure --with-crypto --with-curl --disable-assembly \
       PGFLAGS="$PGFLAGS" \
       CPPFLAGS="$CPPFLAGS" \
-      CFLAGS="$extracflags" \
-      # LDFLAGS='-lgcov --coverage'
+      CFLAGS="$extracflags"
   else
     ./configure --with-crypto --with-curl \
       PGFLAGS="$PGFLAGS" \
       CPPFLAGS="$CPPFLAGS" \
-      CFLAGS="$extracflags" \
-      # LDFLAGS='-lgcov --coverage'
+      CFLAGS="$extracflags"
   fi
   make -j$(nproc)
   cp -v cpuminer{,.unstripped}
