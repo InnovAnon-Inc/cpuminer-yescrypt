@@ -24,6 +24,10 @@ cpuminer_SOURCES = \
   algo/yescrypt.c \
   algo/sha2.c
 
+if __ANDROID_API__
+   cpuminer_SOURCES += getline/getline.c
+endif
+
 disable_flags =
 
 if USE_ASM

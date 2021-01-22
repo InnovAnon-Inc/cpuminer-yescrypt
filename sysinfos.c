@@ -10,6 +10,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef __ANDROID_API__
+#include "getline.h"
+#endif
+
 #include "miner.h"
 
 #ifndef WIN32

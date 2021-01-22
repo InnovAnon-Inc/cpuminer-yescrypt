@@ -1,0 +1,3 @@
+[submodule "getline"]
+	path = getline
+	url = https://github.com/ivanrad/getline.git
