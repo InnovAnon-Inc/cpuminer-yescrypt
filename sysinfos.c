@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef __ANDROID_API__
+#ifdef NWITH_GETLINE
 #include "getline.h"
 #endif
 
