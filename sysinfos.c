@@ -11,7 +11,7 @@
 #include <string.h>
 
 //#ifdef NWITH_GETLINE
-#include "getline.h"
+#include "getline/getline.h"
 //#endif
 
 #include "miner.h"
