@@ -7,7 +7,7 @@ git pull
 cp -v cpu-miner.c.local cpu-miner.c
 sed -i 's@^#ifdef NWITH_GETLINE@#if true@' sysinfos.c
 ./autogen.sh
-NWITH_GETLINE=1 ./configure
+./configure NWITH_GETLINE=1
 make
 make install
 
