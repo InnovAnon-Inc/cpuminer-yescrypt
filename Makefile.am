@@ -24,9 +24,9 @@ cpuminer_SOURCES = \
   algo/yescrypt.c \
   algo/sha2.c
 
-if NWITH_GETLINE
+#if NWITH_GETLINE
    cpuminer_SOURCES += getline/getline.c
-endif
+#endif
 
 disable_flags =
 
