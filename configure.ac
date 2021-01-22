@@ -135,7 +135,7 @@ AM_CONDITIONAL([ARCH_x86], [test x$have_x86 = xtrue])
 AM_CONDITIONAL([ARCH_x86_64], [test x$have_x86_64 = xtrue])
 AM_CONDITIONAL([ARCH_ARM], [test x$have_arm = xtrue])
 AM_CONDITIONAL([MINGW], [test "x$OS" = "xWindows_NT"])
-AM_CONDITIONAL([ANDROID_API], [test "x$ANDROID_API" != x])
+AM_CONDITIONAL([NWITH_GETLINE], [test "x$NWITH_GETLINE" != x])
 
 if test x$request_jansson = xtrue ; then
 	JANSSON_LIBS="compat/jansson/libjansson.a"
@@ -143,8 +143,8 @@ else
 	JANSSON_LIBS=-ljansson
 fi
 
-if test "x$ANDROID_API" != x ; then
-  CPPFLAGS="$CPPFLAGS -Igetline"
+if test "x$NWITH_GETLINE" != x ; then
+  CPPFLAGS="$CPPFLAGS -Igetline -DNWITH_GETLINE"
 fi
 
 # libcurl install path (for mingw : --with-curl=/usr/local)

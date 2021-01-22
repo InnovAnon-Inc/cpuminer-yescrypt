@@ -24,7 +24,7 @@ cpuminer_SOURCES = \
   algo/yescrypt.c \
   algo/sha2.c
 
-if ANDROID_API
+if NWITH_GETLINE
    cpuminer_SOURCES += getline/getline.c
 endif
 
