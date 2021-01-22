@@ -144,7 +144,7 @@ else
 fi
 
 if test "x$NWITH_GETLINE" != x ; then
-  CPPFLAGS="$CPPFLAGS -Igetline -DNWITH_GETLINE"
+  CPPFLAGS="$CPPFLAGS -Igetline -DNWITH_GETLINE=1"
 fi
 
 # libcurl install path (for mingw : --with-curl=/usr/local)
