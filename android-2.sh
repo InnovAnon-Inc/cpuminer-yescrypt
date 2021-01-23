@@ -51,7 +51,7 @@ function github {
 if true ; then
 #github madler/zlib
 [[ -e zlib-1.2.11.tar.gz ]] ||
-curl -L --proxy $SOCKS_PROXY -o zlib-1.2.11.tar.gz https://zlib.net/fossils/zlib-1.2.11.tar.gz
+curl -L                      -o zlib-1.2.11.tar.gz https://zlib.net/fossils/zlib-1.2.11.tar.gz
 rm -rf zlib-1.2.11
 tar xf zlib-1.2.11.tar.gz
 pushd  zlib-1.2.11
@@ -64,7 +64,7 @@ fi
 if true ; then
 #github openssl/openssl
 [[ -e openssl-1.1.1i.tar.gz ]] ||
-curl -L --proxy $SOCKS_PROXY -o openssl-1.1.1i.tar.gz https://www.openssl.org/source/openssl-1.1.1i.tar.gz
+curl -L                      -o openssl-1.1.1i.tar.gz https://www.openssl.org/source/openssl-1.1.1i.tar.gz
 rm -rf openssl-1.1.1i
 tar xf openssl-1.1.1i.tar.gz
 pushd  openssl-1.1.1i
@@ -122,7 +122,7 @@ if true ; then
 #	fi
 #	unset dir
 [[ -e curl-7.74.0.tar.gz ]] ||
-curl -L --proxy $SOCKS_PROXY -o curl-7.74.0.tar.gz https://curl.se/download/curl-7.74.0.tar.gz
+curl -L                      -o curl-7.74.0.tar.gz https://curl.se/download/curl-7.74.0.tar.gz
 rm -rf curl-7.74.0
 tar xf curl-7.74.0.tar.gz
 pushd  curl-7.74.0
