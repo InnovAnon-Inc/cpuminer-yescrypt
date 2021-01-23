@@ -264,12 +264,8 @@ sed -i \
 	--disable-shared           \
 	--enable-static            \
 	--enable-assembly         \
-	CPPFLAGS="$CPPFLAGS -DCURL_STATICLIB" \
-	CXXFLAGS="$CXXFLAGS"       \
-	CFLAGS="$CFLAGS"           \
+	CPPFLAGS="$CPPFLAGS" \
 	LDFLAGS="$LDFLAGS"         \
-	CC="$CC"                   \
-	CXX="$CXX"                 \
 	LIBS='-lz -lcrypto -lssl -lcurl -ljansson'
 make
 make install
