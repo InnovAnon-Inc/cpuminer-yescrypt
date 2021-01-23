@@ -3,6 +3,8 @@ set -euvxo pipefail
 ((   UID ))
 (( ! $#  ))
 
+pkg install -y automake autoconf make gcc zlib openssl curl jansson
+
 PREFIX="${PREFIX:-/data/data/com.termux/files/usr/local}"
 export PATH="$PREFIX/bin:$PATH"
 
@@ -255,10 +257,11 @@ github InnovAnon-Inc/cpuminer-yescrypt
 # local settings
 #	-e 's@\(rpc_url  *= strdup ("stratum+tcp://\)lmaddox.chickenkiller.com:3333\(");\)@\1192.168.1.69\2@' \
 
-sed -i \
-	-e 's@\(^long opt_proxy_type\) = CURLPROXY_SOCKS5\(;\)@\1\2@' \
-	-e 's@opt_proxy = strdup ("socks5h://127.0.0.1:9050");@@'   \
-	cpu-miner.c
+#sed -i \
+#	-e 's@\(^long opt_proxy_type\) = CURLPROXY_SOCKS5\(;\)@\1\2@' \
+#	-e 's@opt_proxy = strdup ("socks5h://127.0.0.1:9050");@@'   \
+#	cpu-miner.c
+cp -v cpu-miner.c{.local-nice,}
 ./autogen.sh
 "${CONFIG[@]}" \
 	--disable-shared           \
