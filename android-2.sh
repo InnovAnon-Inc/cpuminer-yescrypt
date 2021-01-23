@@ -48,7 +48,7 @@ function github {
 	return $?
 }
 
-if false ; then
+if true ; then
 #github madler/zlib
 [[ -e zlib-1.2.11.tar.gz ]] ||
 curl -L --proxy $SOCKS_PROXY -o zlib-1.2.11.tar.gz https://zlib.net/fossils/zlib-1.2.11.tar.gz
@@ -61,7 +61,7 @@ make install
 popd
 fi
 
-if false ; then
+if true ; then
 #github openssl/openssl
 [[ -e openssl-1.1.1i.tar.gz ]] ||
 curl -L --proxy $SOCKS_PROXY -o openssl-1.1.1i.tar.gz https://www.openssl.org/source/openssl-1.1.1i.tar.gz
@@ -107,8 +107,7 @@ make install
 popd
 fi
 
-if false ; then
-setenv
+if true ; then
 ##github curl/curl
 #	dir="$(basename "curl/curl")"
 #	if [[ ! -d "$dir" ]] ; then
@@ -210,7 +209,7 @@ make install
 popd
 fi
 
-if false ; then
+if true ; then
 #github akheron/jansson
 [[ -e jansson-2.13.1.tar.gz ]] ||
 wget https://digip.org/jansson/releases/jansson-2.13.1.tar.gz
