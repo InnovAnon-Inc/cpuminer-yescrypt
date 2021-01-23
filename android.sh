@@ -6,7 +6,7 @@ git clean -fdx
 git pull
 cp -v cpu-miner.c.local cpu-miner.c
 ./autogen.sh
-./configure
+./configure NWITH_GETLINE=1
 make
 make install
 

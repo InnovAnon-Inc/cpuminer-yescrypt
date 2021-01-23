@@ -10,9 +10,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-//#ifdef NWITH_GETLINE
-#include "getline/getline.h"
-//#endif
+#ifdef NWITH_GETLINE
+#include "getline.h"
+#endif
 
 #include "miner.h"
 
