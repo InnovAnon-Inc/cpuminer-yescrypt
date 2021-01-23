@@ -128,8 +128,6 @@ tar xf curl-7.74.0.tar.gz
 pushd  curl-7.74.0
 autoreconf -fi
 "${CONFIG[@]}" \
-	--target="$CHOST"          \
-	--host="$CHOST"            \
 	--with-zlib="$PREFIX"  \
 	--with-ssl="$PREFIX"   \
 	--disable-shared           \
@@ -219,8 +217,6 @@ tar xf jansson-2.13.1.tar.gz
 pushd  jansson-2.13.1
 autoreconf -fi
 "${CONFIG[@]}" \
-	--target="$CHOST"          \
-	--host="$CHOST"            \
 	--disable-shared           \
 	--enable-static            \
 	CPPFLAGS="$CPPFLAGS"       \
@@ -266,8 +262,6 @@ sed -i \
 	cpu-miner.c
 ./autogen.sh
 "${CONFIG[@]}" \
-	--target="$CHOST"          \
-	--host="$CHOST"            \
 	--disable-shared           \
 	--enable-static            \
 	--enable-assembly         \
