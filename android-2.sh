@@ -3,7 +3,7 @@ set -euvxo pipefail
 ((   UID ))
 (( ! $#  ))
 
-pkg install -y automake autoconf make gcc zlib openssl curl jansson
+pkg install -y automake autoconf make zlib openssl curl libjansson
 
 PREFIX="${PREFIX:-/data/data/com.termux/files/usr/local}"
 export PATH="$PREFIX/bin:$PATH"
