@@ -69,7 +69,7 @@ rm -rf openssl-1.1.1i
 tar xf openssl-1.1.1i.tar.gz
 pushd  openssl-1.1.1i
 	#"-D__ANDROID_API__=16"   \
-./Configure \
+./config    \
 	--prefix="$PREFIX"             \
 	threads no-shared zlib             \
 	-DOPENSSL_SMALL_FOOTPRINT          \
