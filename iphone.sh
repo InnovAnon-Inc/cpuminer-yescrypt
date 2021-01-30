@@ -3,7 +3,7 @@ set -euvxo pipefail
 (( ! UID ))
 (( ! $#  ))
 
-apk add automake autoconf make gcc g++ zlib openssl curl libjansson
+apk add automake autoconf make gcc g++ zlib openssl curl jansson
 
 #PREFIX="${PREFIX:-/data/data/com.termux/files/usr/local}"
 PREFIX="${PREFIX:-/usr/local}"
