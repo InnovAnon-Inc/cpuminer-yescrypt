@@ -279,7 +279,7 @@ CFLAGS0="-Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociativ
 #CFLAGS0="-Ofast -g0 $CFLAGS1"
 CFLAGS="${CFLAGS:-} $CFLAGS0"
 CXXFLAGS="${CXXFLAGS:-} $CFLAGS0"
-LDFLAGS="$LDFLAGS $CFLAGS1 -Wl,-s -Wl,-Bsymbolic -Wl,--gc-sections"
+LDFLAGS="${LDFLAGS:-} $CFLAGS1 -Wl,-s -Wl,-Bsymbolic -Wl,--gc-sections"
 #LDFLAGS="${LDFLAGS:-} $CFLAGS1"
 unset CLAGS0 CFLAGS1
 export CPPFLAGS CXXFLAGS CFLAGS LDFLAGS
