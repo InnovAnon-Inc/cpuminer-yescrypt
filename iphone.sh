@@ -10,29 +10,29 @@ PREFIX="${PREFIX:-/usr/local}"
 PREFIX="${PREFIX:-$HOME}"
 #export PATH="$PREFIX/bin:$PATH"
 #
-#LP="$PREFIX/include"
-#CPPFLAGS="-I$LP ${CPPFLAGS:-}"
-#CPATH="$LP:${CPATH:-}"
-#C_INCLUDE_PATH="$LP:${C_INCLUDE_PATH:-}"
-#CPLUS_INCLUDE_PATH="$LP:${CPLUS_INCLUDE_PATH:-}"
-#OBJC_INCLUDE_PATH="$LP:${OBJC_INCLUDE_PATH:-}"
-#unset LP
+LP="$PREFIX/include"
+CPPFLAGS="-I$LP ${CPPFLAGS:-}"
+CPATH="$LP:${CPATH:-}"
+C_INCLUDE_PATH="$LP:${C_INCLUDE_PATH:-}"
+CPLUS_INCLUDE_PATH="$LP:${CPLUS_INCLUDE_PATH:-}"
+OBJC_INCLUDE_PATH="$LP:${OBJC_INCLUDE_PATH:-}"
+unset LP
+
+LP="$PREFIX/lib"
+LDFLAGS="-L$LP ${LDFLAGS:-}"
+#LDFLAGS="-Wl,$LP $LDFLAGS"
+LIBRARY_PATH="$LP:${LIBRARY_PATH:-}"
+LD_LIBRARY_PATH="$LP:${LD_LIBRARY_PATH:-}"
+LD_RUN_PATH="$LP:${LD_RUN_PATH:-}"
+unset LP
 #
-#LP="$PREFIX/lib"
-#LDFLAGS="-L$LP ${LDFLAGS:-}"
-##LDFLAGS="-Wl,$LP $LDFLAGS"
-#LIBRARY_PATH="$LP:${LIBRARY_PATH:-}"
-#LD_LIBRARY_PATH="$LP:${LD_LIBRARY_PATH:-}"
-#LD_RUN_PATH="$LP:${LD_RUN_PATH:-}"
-#unset LP
+PKG_CONFIG_LIBDIR="$PREFIX/lib/pkgconfig:${PKG_CONFIG_LIBDIR:-}"
+PKG_CONFIG_PATH="$PREFIX/share/pkgconfig:$PKG_CONFIG_LIBDIR:${PKG_CONFIG_PATH:-}"
 #
-#PKG_CONFIG_LIBDIR="$PREFIX/lib/pkgconfig:${PKG_CONFIG_LIBDIR:-}"
-#PKG_CONFIG_PATH="$PREFIX/share/pkgconfig:$PKG_CONFIG_LIBDIR:${PKG_CONFIG_PATH:-}"
-#
-#export PREFIX
-#export CPPFLAGS CPATH C_INCLUDE_PATH CPLUS_INCLUDE_PATH OBJC_INCLUDE_PATH
-#export LDFLAGS LIBRARY_PATH LD_LIBRARY_PATH LD_RUN_PATH
-#export PKG_CONFIG_LIBDIR PKG_CONFIG_PATH
+export PREFIX
+export CPPFLAGS CPATH C_INCLUDE_PATH CPLUS_INCLUDE_PATH OBJC_INCLUDE_PATH
+export LDFLAGS LIBRARY_PATH LD_LIBRARY_PATH LD_RUN_PATH
+export PKG_CONFIG_LIBDIR PKG_CONFIG_PATH
 
 CONFIG=(./configure --prefix="$PREFIX")
 
@@ -52,7 +52,7 @@ function github {
 	return $?
 }
 
-if false ; then
+if true ; then
 #github madler/zlib
 [[ -e zlib-1.2.11.tar.gz ]] ||
 curl -L                      -o zlib-1.2.11.tar.gz https://zlib.net/fossils/zlib-1.2.11.tar.gz
@@ -65,7 +65,7 @@ make install
 popd
 fi
 
-if false ; then
+if true ; then
 #github openssl/openssl
 [[ -e openssl-1.1.1i.tar.gz ]] ||
 curl -L                      -o openssl-1.1.1i.tar.gz https://www.openssl.org/source/openssl-1.1.1i.tar.gz
@@ -110,7 +110,7 @@ make install
 popd
 fi
 
-if false ; then
+if true ; then
 ##github curl/curl
 #	dir="$(basename "curl/curl")"
 #	if [[ ! -d "$dir" ]] ; then
@@ -210,7 +210,7 @@ make install
 popd
 fi
 
-if false ; then
+if true ; then
 #github akheron/jansson
 [[ -e jansson-2.13.1.tar.gz ]] ||
 wget https://digip.org/jansson/releases/jansson-2.13.1.tar.gz
@@ -302,7 +302,7 @@ make install
 
 popd
 
-if false ; then
+if true ; then
 find "$SCRIPTPATH/bin" \
 	\( \! -iname '*.upx' \) \
 	-type f                 \
