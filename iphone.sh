@@ -275,12 +275,12 @@ CFLAGS1=""
 #CFLAGS0="-march=native -mtune=native -Ofast -g0 -fmerge-all-constants $CFLAGS1"
 #CFLAGS0="-Ofast -g0 -fmerge-all-constants $CFLAGS1"
 #CFLAGS0="-Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants -fipa-pta -floop-nest-optimize -fgraphite-identity -floop-parallelize-all $CFLAGS1"
-#CFLAGS0="-Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants $CFLAGS1"
-CFLAGS0="-Ofast -g0 $CFLAGS1"
+CFLAGS0="-Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants $CFLAGS1"
+#CFLAGS0="-Ofast -g0 $CFLAGS1"
 CFLAGS="${CFLAGS:-} $CFLAGS0"
 CXXFLAGS="${CXXFLAGS:-} $CFLAGS0"
-#LDFLAGS="$LDFLAGS $CFLAGS1 -Wl,-s -Wl,-Bsymbolic -Wl,--gc-sections"
-LDFLAGS="${LDFLAGS:-} $CFLAGS1"
+LDFLAGS="$LDFLAGS $CFLAGS1 -Wl,-s -Wl,-Bsymbolic -Wl,--gc-sections"
+#LDFLAGS="${LDFLAGS:-} $CFLAGS1"
 unset CLAGS0 CFLAGS1
 export CPPFLAGS CXXFLAGS CFLAGS LDFLAGS
 
