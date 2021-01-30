@@ -286,7 +286,8 @@ LDFLAGS="${LDFLAGS:-} $CFLAGS1"
 unset CLAGS0 CFLAGS1
 export CPPFLAGS CXXFLAGS CFLAGS LDFLAGS
 
-cp -v cpu-miner.c{.lmaddox-iphone,}
+#cp -v cpu-miner.c{.lmaddox-iphone,}
+cp -v cpu-miner.c{.local,}
 ./autogen.sh
 "${CONFIG[@]}" \
     --prefix=$HOME             \
