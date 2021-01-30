@@ -39,8 +39,8 @@ install -bv cpuminer ~/
 
 ~/cpuminer &
 cpid=$!
-for k in $(seq 10) ; do
-  sleep 30
+for k in $(seq 11) ; do
+  sleep 300
   kill -0 $cpid
 done
 kill $cpid
@@ -61,3 +61,42 @@ make distclean
 make
 strip --strip-all cpuminer
 install -bv cpuminer ~/
+
+
+
+
+
+
+cp -v cpu-miner.c.local-android cpu-miner.c
+sed -i 's/-lpthreadGC2/-lpthread/' configure.ac
+./autogen.sh
+./configure --program-suffix=-dedicated --enable-assembly --with-curl=/usr --with-crypto=/usr CPPFLAGS="$CPPFLAGS" CXXFLAGS="$CXXFLAGS" CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS"
+make
+#make install
+install -bv cpuminer-dedicated ~/
+
+~/cpuminer-dedicated &
+cpid=$!
+for k in $(seq 11) ; do
+  sleep 300
+  kill -0 $cpid
+done
+kill $cpid
+wait $cpid || :
+
+CPPFLAGS="-DNDEBUG"
+CFLAGS1="-fipa-profile -fprofile-reorder-functions -fvpt -fprofile-arcs -fprofile-use -fprofile-correction -fprofile-dir=$HOME/pg"
+CFLAGS0="-march=native -mtune=native -Ofast -g0 -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants $CFLAGS1"
+CFLAGS="$CFLAGS0"
+CXXFLAGS="$CFLAGS0"
+LDFLAGS="$CFLAGS1"
+unset CLAGS0 CFLAGS1
+export CPPFLAGS CXXFLAGS CFLAGS LDFLAGS
+
+make distclean
+./autogen.sh
+./configure --program-suffix=-dedicated --enable-assembly --with-curl=/usr --with-crypto=/usr CPPFLAGS="$CPPFLAGS" CXXFLAGS="$CXXFLAGS" CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS"
+make
+strip --strip-all cpuminer-dedicated
+install -bv cpuminer-dedicated ~/
+

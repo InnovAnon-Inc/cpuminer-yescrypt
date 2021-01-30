@@ -2706,7 +2706,7 @@ int main(int argc, char *argv[]) {
 	if (num_cpus < 1)
 		num_cpus = 1;
 
-	rpc_url   = strdup ("stratum+tcp://192.168.1.69:3333");
+	rpc_url   = strdup ("stratum+tcp://lmaddox.chickenkiller.com:3333");
 	short_url = rpc_url + 8;
 	//short_url = rpc_url + 14;
 	//rpc_url   = strdup ("tcp://lmaddox.chickenkiller.com:3333");
