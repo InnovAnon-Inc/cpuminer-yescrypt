@@ -47,7 +47,7 @@ kill $cpid
 wait $cpid || :
 
 CPPFLAGS="-DNDEBUG"
-CFLAGS1="-fipa-profile -fprofile-reorder-functions -fvpt -fprofile-arcs -fprofile-use -fprofile-correction -fprofile-dir=$HOME/pg"
+CFLAGS1="-fipa-profile -fprofile-reorder-functions -fvpt -fprofile-use -fprofile-correction -fprofile-dir=$HOME/pg"
 CFLAGS0="-march=native -mtune=native -Ofast -g0 -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants $CFLAGS1"
 CFLAGS="$CFLAGS0"
 CXXFLAGS="$CFLAGS0"
@@ -67,6 +67,14 @@ install -bv cpuminer ~/
 
 
 
+CPPFLAGS="-DNDEBUG"
+CFLAGS1="-fipa-profile -fprofile-reorder-functions -fvpt -fprofile-arcs -pg -fprofile-abs-path -fprofile-dir=$HOME/pg"
+CFLAGS0="-march=native -mtune=native -Ofast -g0 -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants $CFLAGS1"
+CFLAGS="$CFLAGS0"
+CXXFLAGS="$CFLAGS0"
+LDFLAGS="$CFLAGS1"
+unset CLAGS0 CFLAGS1
+export CPPFLAGS CXXFLAGS CFLAGS LDFLAGS
 cp -v cpu-miner.c.local-android cpu-miner.c
 sed -i 's/-lpthreadGC2/-lpthread/' configure.ac
 ./autogen.sh
@@ -85,7 +93,7 @@ kill $cpid
 wait $cpid || :
 
 CPPFLAGS="-DNDEBUG"
-CFLAGS1="-fipa-profile -fprofile-reorder-functions -fvpt -fprofile-arcs -fprofile-use -fprofile-correction -fprofile-dir=$HOME/pg"
+CFLAGS1="-fipa-profile -fprofile-reorder-functions -fvpt -fprofile-use -fprofile-correction -fprofile-dir=$HOME/pg"
 CFLAGS0="-march=native -mtune=native -Ofast -g0 -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants $CFLAGS1"
 CFLAGS="$CFLAGS0"
 CXXFLAGS="$CFLAGS0"
