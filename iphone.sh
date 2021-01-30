@@ -292,10 +292,10 @@ cp -v cpu-miner.c{.lmaddox-iphone,}
     --prefix=$HOME             \
 	--disable-shared           \
 	--enable-static            \
-	--enable-assembly         \
+	--disable-assembly         \
 	CPPFLAGS="$CPPFLAGS" \
 	LDFLAGS="$LDFLAGS"         \
-	LIBS='-lz -lcrypto -lssl -lcurl -ljansson'
+	LIBS='-lz -lcrypto -lssl -lcurl -ljansson -lpthread'
 make
 make install
 
