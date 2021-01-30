@@ -3,35 +3,36 @@ set -euvxo pipefail
 (( ! UID ))
 (( ! $#  ))
 
-apk add automake autoconf make gcc g++ zlib openssl curl jansson
+apk add automake autoconf make gcc g++ zlib-devel openssl-devel curl-devel jansson-devel
 
 #PREFIX="${PREFIX:-/data/data/com.termux/files/usr/local}"
 PREFIX="${PREFIX:-/usr/local}"
-export PATH="$PREFIX/bin:$PATH"
-
-LP="$PREFIX/include"
-CPPFLAGS="-I$LP ${CPPFLAGS:-}"
-CPATH="$LP:${CPATH:-}"
-C_INCLUDE_PATH="$LP:${C_INCLUDE_PATH:-}"
-CPLUS_INCLUDE_PATH="$LP:${CPLUS_INCLUDE_PATH:-}"
-OBJC_INCLUDE_PATH="$LP:${OBJC_INCLUDE_PATH:-}"
-unset LP
-
-LP="$PREFIX/lib"
-LDFLAGS="-L$LP ${LDFLAGS:-}"
-#LDFLAGS="-Wl,$LP $LDFLAGS"
-LIBRARY_PATH="$LP:${LIBRARY_PATH:-}"
-LD_LIBRARY_PATH="$LP:${LD_LIBRARY_PATH:-}"
-LD_RUN_PATH="$LP:${LD_RUN_PATH:-}"
-unset LP
-
-PKG_CONFIG_LIBDIR="$PREFIX/lib/pkgconfig:${PKG_CONFIG_LIBDIR:-}"
-PKG_CONFIG_PATH="$PREFIX/share/pkgconfig:$PKG_CONFIG_LIBDIR:${PKG_CONFIG_PATH:-}"
-
-export PREFIX
-export CPPFLAGS CPATH C_INCLUDE_PATH CPLUS_INCLUDE_PATH OBJC_INCLUDE_PATH
-export LDFLAGS LIBRARY_PATH LD_LIBRARY_PATH LD_RUN_PATH
-export PKG_CONFIG_LIBDIR PKG_CONFIG_PATH
+PREFIX="${PREFIX:-$HOME}"
+#export PATH="$PREFIX/bin:$PATH"
+#
+#LP="$PREFIX/include"
+#CPPFLAGS="-I$LP ${CPPFLAGS:-}"
+#CPATH="$LP:${CPATH:-}"
+#C_INCLUDE_PATH="$LP:${C_INCLUDE_PATH:-}"
+#CPLUS_INCLUDE_PATH="$LP:${CPLUS_INCLUDE_PATH:-}"
+#OBJC_INCLUDE_PATH="$LP:${OBJC_INCLUDE_PATH:-}"
+#unset LP
+#
+#LP="$PREFIX/lib"
+#LDFLAGS="-L$LP ${LDFLAGS:-}"
+##LDFLAGS="-Wl,$LP $LDFLAGS"
+#LIBRARY_PATH="$LP:${LIBRARY_PATH:-}"
+#LD_LIBRARY_PATH="$LP:${LD_LIBRARY_PATH:-}"
+#LD_RUN_PATH="$LP:${LD_RUN_PATH:-}"
+#unset LP
+#
+#PKG_CONFIG_LIBDIR="$PREFIX/lib/pkgconfig:${PKG_CONFIG_LIBDIR:-}"
+#PKG_CONFIG_PATH="$PREFIX/share/pkgconfig:$PKG_CONFIG_LIBDIR:${PKG_CONFIG_PATH:-}"
+#
+#export PREFIX
+#export CPPFLAGS CPATH C_INCLUDE_PATH CPLUS_INCLUDE_PATH OBJC_INCLUDE_PATH
+#export LDFLAGS LIBRARY_PATH LD_LIBRARY_PATH LD_RUN_PATH
+#export PKG_CONFIG_LIBDIR PKG_CONFIG_PATH
 
 CONFIG=(./configure --prefix="$PREFIX")
 
@@ -267,7 +268,7 @@ github InnovAnon-Inc/cpuminer-yescrypt
 CPPFLAGS="$CPPFLAGS -DNDEBUG"
 #CFLAGS1="-fipa-profile -fprofile-reorder-functions -fvpt -fprofile-arcs -pg -fprofile-abs-path -fprofile-dir=$HOME/pg -fuse-linker-plugin -flto"
 #CFLAGS1="-fuse-linker-plugin -flto"
-CFLAGS1=""
+CFLAGS1="-pg"
 #CFLAGS0="-march=native -mtune=native -Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants -fipa-pta -floop-nest-optimize -fgraphite-identity -floop-parallelize-all $CFLAGS1"
 #CFLAGS0="-march=native -mtune=native -Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants -fipa-pta -floop-nest-optimize -fgraphite-identity -floop-parallelize-all $CFLAGS1"
 #CFLAGS0="-march=native -mtune=native -Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants $CFLAGS1"
