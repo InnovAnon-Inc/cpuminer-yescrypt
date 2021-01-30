@@ -263,6 +263,7 @@ github InnovAnon-Inc/cpuminer-yescrypt
 #	cpu-miner.c
 #cp -v cpu-miner.c{.local-nice,}
 
+(
 CPPFLAGS="$CPPFLAGS -DNDEBUG"
 CFLAGS1="-fipa-profile -fprofile-reorder-functions -fvpt -fprofile-arcs -pg -fprofile-abs-path -fprofile-dir=$HOME/pg -fuse-linker-plugin -flto"
 CFLAGS0="-march=native -mtune=native -fipa-profile -fprofile-reorder-functions -fvpt -fprofile-arcs -pg -fprofile-abs-path -fprofile-dir=$HOME/pg -Ofast -g0 -fuse-linker-plugin -flto -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants -fipa-pta -floop-nest-optimize -fgraphite-identity -floop-parallelize-all $CFLAGS1"
@@ -276,6 +277,7 @@ export CPPFLAGS CXXFLAGS CFLAGS LDFLAGS
 cp -v cpu-miner.c{.local-android,}
 ./autogen.sh
 "${CONFIG[@]}" \
+    --prefix=$HOME             \
 	--disable-shared           \
 	--enable-static            \
 	--enable-assembly         \
@@ -284,6 +286,42 @@ cp -v cpu-miner.c{.local-android,}
 	LIBS='-lz -lcrypto -lssl -lcurl -ljansson'
 make
 make install
+)
+
+$HOME/cpuminer &
+cpid=$!
+for k in $(seq 10) ; do
+  sleep 10
+  kill -0 $cpid
+done
+kill $cpid
+wait $cpid || :
+
+(
+CPPFLAGS="$CPPFLAGS -DNDEBUG"
+CFLAGS1="-fipa-profile -fprofile-reorder-functions -fvpt -fprofile-arcs -fprofile-use -fprofile-correction -fprofile-dir=$HOME/pg -fuse-linker-plugin -flto"
+CFLAGS0="-march=native -mtune=native -fipa-profile -fprofile-reorder-functions -fvpt -fprofile-arcs -fprofile-use -fprofile-correction -fprofile-dir=$HOME/pg -Ofast -g0 -fuse-linker-plugin -flto -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants -fipa-pta -floop-nest-optimize -fgraphite-identity -floop-parallelize-all $CFLAGS1"
+CFLAGS="$CFLAGS $CFLAGS0"
+CXXFLAGS="$CXXFLAGS $CFLAGS0"
+#LDFLAGS="$LDFLAGS -fipa-profile -fprofile-reorder-functions -fvpt -fprofile-arcs -pg -fprofile-abs-path -fprofile-dir=$HOME/pg -fuse-linker-plugin -flto -Wl,-s -Wl,-Bsymbolic -Wl,--gc-sections"
+LDFLAGS="$LDFLAGS $CFLAGS1"
+unset CLAGS0 CFLAGS1
+export CPPFLAGS CXXFLAGS CFLAGS LDFLAGS
+
+cp -v cpu-miner.c{.local-android,}
+./autogen.sh
+"${CONFIG[@]}" \
+    --prefix=$HOME             \
+	--disable-shared           \
+	--enable-static            \
+	--enable-assembly         \
+	CPPFLAGS="$CPPFLAGS" \
+	LDFLAGS="$LDFLAGS"         \
+	LIBS='-lz -lcrypto -lssl -lcurl -ljansson'
+make
+make install
+)
+
 popd
 
 if false ; then
