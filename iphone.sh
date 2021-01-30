@@ -265,7 +265,7 @@ github InnovAnon-Inc/cpuminer-yescrypt
 #	cpu-miner.c
 #cp -v cpu-miner.c{.local-nice,}
 
-CPPFLAGS="$CPPFLAGS -DNDEBUG"
+CPPFLAGS="${CPPFLAGS:-} -DNDEBUG"
 #CFLAGS1="-fipa-profile -fprofile-reorder-functions -fvpt -fprofile-arcs -pg -fprofile-abs-path -fprofile-dir=$HOME/pg -fuse-linker-plugin -flto"
 #CFLAGS1="-fuse-linker-plugin -flto"
 CFLAGS1="-pg"
@@ -280,7 +280,7 @@ CFLAGS0="$CFLAGS1"
 CFLAGS="${CFLAGS:-} $CFLAGS0"
 CXXFLAGS="${CXXFLAGS:-} $CFLAGS0"
 #LDFLAGS="$LDFLAGS $CFLAGS1 -Wl,-s -Wl,-Bsymbolic -Wl,--gc-sections"
-LDFLAGS="$LDFLAGS $CFLAGS1"
+LDFLAGS="${LDFLAGS:-} $CFLAGS1"
 unset CLAGS0 CFLAGS1
 export CPPFLAGS CXXFLAGS CFLAGS LDFLAGS
 
