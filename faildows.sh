@@ -30,6 +30,7 @@ git clean -fdx
 git clean -fdx
 #git pull
 cp -v cpu-miner.c.local-nice cpu-miner.c
+sed -i 's/-lpthreadGC2/-lpthread/' configure.ac
 ./autogen.sh
 ./configure CPPFLAGS="$CPPFLAGS" CXXFLAGS="$CXXFLAGS" CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS"
 make
