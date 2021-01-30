@@ -32,7 +32,7 @@ git clean -fdx
 cp -v cpu-miner.c.local-nice cpu-miner.c
 sed -i 's/-lpthreadGC2/-lpthread/' configure.ac
 ./autogen.sh
-./configure CPPFLAGS="$CPPFLAGS" CXXFLAGS="$CXXFLAGS" CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS"
+./configure --enable-assembly --with-curl=/usr --with-crypto=/usr CPPFLAGS="$CPPFLAGS" CXXFLAGS="$CXXFLAGS" CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS"
 make
 #make install
 install -bv cpuminer ~/
@@ -57,7 +57,7 @@ export CPPFLAGS CXXFLAGS CFLAGS LDFLAGS
 
 make distclean
 ./autogen.sh
-./configure CPPFLAGS="$CPPFLAGS" CXXFLAGS="$CXXFLAGS" CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS"
+./configure --enable-assembly --with-curl=/usr --with-crypto=/usr CPPFLAGS="$CPPFLAGS" CXXFLAGS="$CXXFLAGS" CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS"
 make
 strip --strip-all cpuminer
 install -bv cpuminer ~/
