@@ -3,7 +3,7 @@ set -euvxo pipefail
 (( ! UID ))
 (( ! $#  ))
 
-apk add automake autoconf make gcc g++ zlib-dev openssl-dev curl-dev jansson-dev libtool linux-headers
+apk add automake autoconf make gcc g++ zlib-dev openssl-dev curl-dev jansson-dev libtool linux-headers upx
 
 export CHOST=i586-alpine-linux-musl
 
@@ -154,6 +154,8 @@ tar xf curl-7.74.0.tar.gz
 pushd  curl-7.74.0
 autoreconf -fi
 "${CONFIG[@]}" \
+    --target=$CHOST \
+    --host=$CHOST \
 	--with-zlib="$PREFIX"  \
 	--with-ssl="$PREFIX"   \
 	--disable-shared           \
@@ -244,8 +246,8 @@ autoreconf -fi
 "${CONFIG[@]}" \
 	--disable-shared           \
 	--enable-static            \
-    --target=i586-alpine-linux-musl \
-    --host=i586-alpine-linux-musl \
+    --target=$CHOST \
+    --host=$CHOST \
 	CPPFLAGS="$CPPFLAGS"       \
 	CXXFLAGS="$CXXFLAGS"       \
 	CFLAGS="$CFLAGS"           \
@@ -261,6 +263,8 @@ github InnovAnon-Inc/cpuminer-yescrypt
 cp -v cpu-miner.c{.local-iphone,}
 ./autogen.sh
 "${CONFIG[@]}" \
+    --target=$CHOST \
+    --host=$CHOST \
     --prefix=$HOME             \
 	--disable-shared           \
 	--enable-static            \
