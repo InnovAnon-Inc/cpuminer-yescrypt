@@ -2924,8 +2924,10 @@ int main(int argc, char *argv[]) {
 	/* main loop - simply wait for workio thread to exit */
 	pthread_join(thr_info[work_thr_id].pth, NULL);
 
+    /*
 	//applog(LOG_WARNING, "workio thread dead, exiting.");
 	//applog(LOG_INFO, "workio thread dead, exiting.");
+    */
 
 	return 0;
 }
