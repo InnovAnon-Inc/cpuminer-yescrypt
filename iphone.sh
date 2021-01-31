@@ -131,7 +131,7 @@ make install
 popd
 fi
 
-if true ; then
+if false ; then
 ##github curl/curl
 #	dir="$(basename "curl/curl")"
 #	if [[ ! -d "$dir" ]] ; then
@@ -229,7 +229,8 @@ make install
 popd
 fi
 
-if true ; then
+# TODO
+if false ; then
 #github akheron/jansson
 [[ -e jansson-2.13.1.tar.gz ]] ||
 wget https://digip.org/jansson/releases/jansson-2.13.1.tar.gz
