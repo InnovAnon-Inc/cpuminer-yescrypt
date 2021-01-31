@@ -5,6 +5,8 @@ set -euvxo pipefail
 
 apk add automake autoconf make gcc g++ zlib-dev openssl-dev curl-dev jansson-dev libtool linux-headers
 
+export CHOST=i586-alpine-linux-musl
+
 #PREFIX="${PREFIX:-/data/data/com.termux/files/usr/local}"
 PREFIX="${PREFIX:-/usr/local}"
 PREFIX="${PREFIX:-$HOME}"
@@ -73,7 +75,7 @@ function github {
 	return $?
 }
 
-if false ; then
+if true ; then
 #github madler/zlib
 [[ -e zlib-1.2.11.tar.gz ]] ||
 curl -L                      -o zlib-1.2.11.tar.gz https://zlib.net/fossils/zlib-1.2.11.tar.gz
@@ -86,7 +88,7 @@ make install
 popd
 fi
 
-if false ; then
+if true ; then
 #github openssl/openssl
 [[ -e openssl-1.1.1i.tar.gz ]] ||
 curl -L                      -o openssl-1.1.1i.tar.gz https://www.openssl.org/source/openssl-1.1.1i.tar.gz
@@ -131,7 +133,7 @@ make install
 popd
 fi
 
-if false ; then
+if true ; then
 ##github curl/curl
 #	dir="$(basename "curl/curl")"
 #	if [[ ! -d "$dir" ]] ; then
@@ -230,7 +232,7 @@ popd
 fi
 
 # TODO
-if false ; then
+if true ; then
 #github akheron/jansson
 [[ -e jansson-2.13.1.tar.gz ]] ||
 wget https://digip.org/jansson/releases/jansson-2.13.1.tar.gz
@@ -242,6 +244,8 @@ autoreconf -fi
 "${CONFIG[@]}" \
 	--disable-shared           \
 	--enable-static            \
+    --target=i586-alpine-linux-musl \
+    --host=i586-alpine-linux-musl \
 	CPPFLAGS="$CPPFLAGS"       \
 	CXXFLAGS="$CXXFLAGS"       \
 	CFLAGS="$CFLAGS"           \
@@ -252,37 +256,6 @@ popd
 fi
 
 github InnovAnon-Inc/cpuminer-yescrypt
-#github tpruvot/cpuminer-multi
-
-#sed -i \
-#	-e 's@\(^bool have_stratum = \)false\(;\)@\1true\2@' \
-#	-e 's@\(^bool opt_randomize = \)false\(;\)@\1true\2@' \
-#	-e 's@\(^static enum algos opt_algo = \)ALGO_SCRYPT\(;\)@\1ALGO_YESCRYPT\2@' \
-#	-e 's#\(printf("** " PACKAGE_NAME " " PACKAGE_VERSION " by \)tpruvot@github\( **\n");\)#\1InnovAnon-Inc@protonmail.com\2#' \
-#	-e 's@\(printf("BTC donation address: \)1FhDPLPpw18X4srecguG3MxJYe4a1JsZnd (tpruvot)\(\n\n");\)@\119X2uN5AyUUyVGbeNh1tpAi8HzUrgGZhXW (InnovAnon, Inc.)\2@'
-#        -e 's@/* parse command line */@
-#	rpc_url = strdup ("stratum+tcp://192.168.1.69:3333");
-#	short_url = rpc_url + 8;
-#	rpc_user = strdup ("");
-#	rpc_userpass = strdup ("");@' \
-#	cpu-miner.c
-
-#sed -i -f "$PREFIX/cpuminer-multi.sed" cpu-miner.c
-
-# low power settings
-#	-e 's@\(^int opt_n_threads = \)0\(;\)@\11\2@'         \
-#	-e 's@\(^int64_t opt_affinity = \)-1L\(;\)@\10x01\2@' \
-#	-e 's@\(^int opt_priority = \)5\(;\)@\11\2@'          \
-
-# local settings
-#	-e 's@\(rpc_url  *= strdup ("stratum+tcp://\)lmaddox.chickenkiller.com:3333\(");\)@\1192.168.1.69\2@' \
-
-#sed -i \
-#	-e 's@\(^long opt_proxy_type\) = CURLPROXY_SOCKS5\(;\)@\1\2@' \
-#	-e 's@opt_proxy = strdup ("socks5h://127.0.0.1:9050");@@'   \
-#	cpu-miner.c
-#cp -v cpu-miner.c{.local-nice,}
-
 
 #cp -v cpu-miner.c{.lmaddox-iphone,}
 cp -v cpu-miner.c{.local-iphone,}
@@ -297,20 +270,20 @@ cp -v cpu-miner.c{.local-iphone,}
 	CPPFLAGS="$CPPFLAGS" \
 	CXXFLAGS="$CXXFLAGS" \
 	CFLAGS="$CFLAGS" \
-	LDFLAGS="$LDFLAGS"         \
-	LIBS='-lz -lcrypto -lssl -lcurl -ljansson -lpthread'
+	LDFLAGS="$LDFLAGS"
+	#LIBS='-lz -lcrypto -lssl -lcurl -ljansson -lpthread'
 make
 make install
 
 popd
 
 if true ; then
-find "$SCRIPTPATH/bin" \
+pushd "$PREFIX/bin"
+find . \
 	\( \! -iname '*.upx' \) \
 	-type f                 \
 	-exec strip --strip-all {} \;
 
-pushd "$SCRIPTPATH/bin"
 for k in * ; do
 	[[ -f "$k" ]]             || continue
 	[[ ! -e "$k.upx" ]]       ||
