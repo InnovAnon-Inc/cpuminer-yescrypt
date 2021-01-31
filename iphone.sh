@@ -9,7 +9,7 @@ BUILD_CRYPTO=0
 BUILD_CURL=0
 BUILD_JANSSON=0
 USE_PACKER=1
-BUILD_STATIC=1
+BUILD_STATIC=0
 
 if (( INSTALL_DEPS )) ; then
   apk add automake autoconf make gcc g++ zlib-dev openssl-dev curl-dev jansson-dev libtool linux-headers upx
@@ -317,4 +317,7 @@ for k in * ; do
 done
 popd
 fi
+
+ln -sfv "$PREFIX/bin/$CHOST-cpuminer" "$HOME/cpuminer"
+~/cpuminer
 
