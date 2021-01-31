@@ -52,7 +52,7 @@ function github {
 	return $?
 }
 
-if true ; then
+if false ; then
 #github madler/zlib
 [[ -e zlib-1.2.11.tar.gz ]] ||
 curl -L                      -o zlib-1.2.11.tar.gz https://zlib.net/fossils/zlib-1.2.11.tar.gz
@@ -65,7 +65,7 @@ make install
 popd
 fi
 
-if true ; then
+if false ; then
 #github openssl/openssl
 [[ -e openssl-1.1.1i.tar.gz ]] ||
 curl -L                      -o openssl-1.1.1i.tar.gz https://www.openssl.org/source/openssl-1.1.1i.tar.gz
