@@ -34,6 +34,27 @@ export CPPFLAGS CPATH C_INCLUDE_PATH CPLUS_INCLUDE_PATH OBJC_INCLUDE_PATH
 export LDFLAGS LIBRARY_PATH LD_LIBRARY_PATH LD_RUN_PATH
 export PKG_CONFIG_LIBDIR PKG_CONFIG_PATH
 
+CPPFLAGS="${CPPFLAGS:-} -DNDEBUG"
+#CFLAGS1="-fipa-profile -fprofile-reorder-functions -fvpt -fprofile-arcs -pg -fprofile-abs-path -fprofile-dir=$HOME/pg -fuse-linker-plugin -flto"
+#CFLAGS1="-fuse-linker-plugin -flto"
+CFLAGS1=""
+#CFLAGS0="-march=native -mtune=native -Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants -fipa-pta -floop-nest-optimize -fgraphite-identity -floop-parallelize-all $CFLAGS1"
+#CFLAGS0="-march=native -mtune=native -Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants -fipa-pta -floop-nest-optimize -fgraphite-identity -floop-parallelize-all $CFLAGS1"
+#CFLAGS0="-march=native -mtune=native -Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants $CFLAGS1"
+#CFLAGS0="-march=native -mtune=native -Ofast -g0 -fmerge-all-constants $CFLAGS1"
+#CFLAGS0="-Ofast -g0 -fmerge-all-constants $CFLAGS1"
+#CFLAGS0="-Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants -fipa-pta -floop-nest-optimize -fgraphite-identity -floop-parallelize-all $CFLAGS1"
+#CFLAGS0="-Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants $CFLAGS1"
+#CFLAGS0="-Ofast -g0 -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants $CFLAGS1"
+#CFLAGS0="-Ofast -g0 $CFLAGS1"
+CFLAGS0="$CFLAGS1"
+CFLAGS="${CFLAGS:-} $CFLAGS0"
+CXXFLAGS="${CXXFLAGS:-} $CFLAGS0"
+#LDFLAGS="${LDFLAGS:-} $CFLAGS1 -Wl,-s -Wl,-Bsymbolic -Wl,--gc-sections"
+LDFLAGS="${LDFLAGS:-} $CFLAGS1"
+unset CLAGS0 CFLAGS1
+export CPPFLAGS CXXFLAGS CFLAGS LDFLAGS
+
 CONFIG=(./configure --prefix="$PREFIX")
 
 function github {
@@ -265,26 +286,6 @@ github InnovAnon-Inc/cpuminer-yescrypt
 #	cpu-miner.c
 #cp -v cpu-miner.c{.local-nice,}
 
-CPPFLAGS="${CPPFLAGS:-} -DNDEBUG"
-#CFLAGS1="-fipa-profile -fprofile-reorder-functions -fvpt -fprofile-arcs -pg -fprofile-abs-path -fprofile-dir=$HOME/pg -fuse-linker-plugin -flto"
-#CFLAGS1="-fuse-linker-plugin -flto"
-CFLAGS1=""
-#CFLAGS0="-march=native -mtune=native -Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants -fipa-pta -floop-nest-optimize -fgraphite-identity -floop-parallelize-all $CFLAGS1"
-#CFLAGS0="-march=native -mtune=native -Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants -fipa-pta -floop-nest-optimize -fgraphite-identity -floop-parallelize-all $CFLAGS1"
-#CFLAGS0="-march=native -mtune=native -Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants $CFLAGS1"
-#CFLAGS0="-march=native -mtune=native -Ofast -g0 -fmerge-all-constants $CFLAGS1"
-#CFLAGS0="-Ofast -g0 -fmerge-all-constants $CFLAGS1"
-#CFLAGS0="-Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants -fipa-pta -floop-nest-optimize -fgraphite-identity -floop-parallelize-all $CFLAGS1"
-#CFLAGS0="-Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants $CFLAGS1"
-#CFLAGS0="-Ofast -g0 -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants $CFLAGS1"
-#CFLAGS0="-Ofast -g0 $CFLAGS1"
-CFLAGS0="$CFLAGS1"
-CFLAGS="${CFLAGS:-} $CFLAGS0"
-CXXFLAGS="${CXXFLAGS:-} $CFLAGS0"
-#LDFLAGS="${LDFLAGS:-} $CFLAGS1 -Wl,-s -Wl,-Bsymbolic -Wl,--gc-sections"
-LDFLAGS="${LDFLAGS:-} $CFLAGS1"
-unset CLAGS0 CFLAGS1
-export CPPFLAGS CXXFLAGS CFLAGS LDFLAGS
 
 #cp -v cpu-miner.c{.lmaddox-iphone,}
 cp -v cpu-miner.c{.local-iphone,}
