@@ -3,7 +3,16 @@ set -euvxo pipefail
 (( ! UID ))
 (( ! $#  ))
 
-apk add automake autoconf make gcc g++ zlib-dev openssl-dev curl-dev jansson-dev libtool linux-headers upx
+INSTALL_DEPS=0
+BUILD_ZLIB=0
+BUILD_CRYPTO=0
+BUILD_CURL=0
+BUILD_JANSSON=0
+USE_PACKER=1
+
+if (( INSTALL_DEPS )) ; then
+  apk add automake autoconf make gcc g++ zlib-dev openssl-dev curl-dev jansson-dev libtool linux-headers upx
+fi
 
 export CHOST=i586-alpine-linux-musl
 
@@ -36,10 +45,11 @@ export CPPFLAGS CPATH C_INCLUDE_PATH CPLUS_INCLUDE_PATH OBJC_INCLUDE_PATH
 export LDFLAGS LIBRARY_PATH LD_LIBRARY_PATH LD_RUN_PATH
 export PKG_CONFIG_LIBDIR PKG_CONFIG_PATH
 
-CPPFLAGS="${CPPFLAGS:-} -DNDEBUG"
+CPPFLAGS="${CPPFLAGS:-} -DNDEBUG -DNOASM -DNO_ASM"
 #CFLAGS1="-fipa-profile -fprofile-reorder-functions -fvpt -fprofile-arcs -pg -fprofile-abs-path -fprofile-dir=$HOME/pg -fuse-linker-plugin -flto"
 #CFLAGS1="-fuse-linker-plugin -flto"
 CFLAGS1=""
+CFLAGS1="$CFLAGS1 -static -static-libgcc -static-libstdc++"
 #CFLAGS0="-march=native -mtune=native -Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants -fipa-pta -floop-nest-optimize -fgraphite-identity -floop-parallelize-all $CFLAGS1"
 #CFLAGS0="-march=native -mtune=native -Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants -fipa-pta -floop-nest-optimize -fgraphite-identity -floop-parallelize-all $CFLAGS1"
 #CFLAGS0="-march=native -mtune=native -Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants $CFLAGS1"
@@ -50,14 +60,13 @@ CFLAGS1=""
 #CFLAGS0="-Ofast -g0 -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants $CFLAGS1"
 #CFLAGS0="-Ofast -g0 $CFLAGS1"
 CFLAGS0="$CFLAGS1"
+#CFLAGS0="-march=pentium4 $CFLAGS0"
 CFLAGS="${CFLAGS:-} $CFLAGS0"
 CXXFLAGS="${CXXFLAGS:-} $CFLAGS0"
 #LDFLAGS="${LDFLAGS:-} $CFLAGS1 -Wl,-s -Wl,-Bsymbolic -Wl,--gc-sections"
 LDFLAGS="${LDFLAGS:-} $CFLAGS1"
 unset CLAGS0 CFLAGS1
 export CPPFLAGS CXXFLAGS CFLAGS LDFLAGS
-
-CONFIG=(./configure --prefix="$PREFIX")
 
 function github {
 	(( $# == 1 ))
@@ -75,20 +84,20 @@ function github {
 	return $?
 }
 
-if false ; then
-#github madler/zlib
-[[ -e zlib-1.2.11.tar.gz ]] ||
-wget                                               https://zlib.net/fossils/zlib-1.2.11.tar.gz
-rm -rf zlib-1.2.11
-tar xf zlib-1.2.11.tar.gz
-pushd  zlib-1.2.11
-"${CONFIG[@]}" --static --const
+if (( BUILD_ZLIB )) ; then
+github madler/zlib
+#[[ -e zlib-1.2.11.tar.gz ]] ||
+#wget                                               https://zlib.net/fossils/zlib-1.2.11.tar.gz
+#rm -rf zlib-1.2.11
+#tar xf zlib-1.2.11.tar.gz
+#pushd  zlib-1.2.11
+./configure --prefix=$PREFIX --static --const
 make
 make install
 popd
 fi
 
-if false ; then
+if (( BUILD_CRYPTO )) ; then
 #github openssl/openssl
 [[ -e openssl-1.1.1i.tar.gz ]] ||
 wget                                                  https://www.openssl.org/source/openssl-1.1.1i.tar.gz
@@ -133,7 +142,7 @@ make install
 popd
 fi
 
-if false ; then
+if (( BUILD_CURL )) ; then
 ##github curl/curl
 #	dir="$(basename "curl/curl")"
 #	if [[ ! -d "$dir" ]] ; then
@@ -153,7 +162,8 @@ rm -rf curl-7.74.0
 tar xf curl-7.74.0.tar.gz
 pushd  curl-7.74.0
 autoreconf -fi
-"${CONFIG[@]}" \
+./configure --prefix=$PREFIX \
+    --build=$CHOST \
     --target=$CHOST \
     --host=$CHOST \
 	--with-zlib="$PREFIX"  \
@@ -234,7 +244,7 @@ popd
 fi
 
 # TODO
-if false ; then
+if (( BUILD_JANSSON )) ; then
 #github akheron/jansson
 [[ -e jansson-2.13.1.tar.gz ]] ||
 wget https://digip.org/jansson/releases/jansson-2.13.1.tar.gz
@@ -243,11 +253,12 @@ rm -rf jansson-2.13.1
 tar xf jansson-2.13.1.tar.gz
 pushd  jansson-2.13.1
 autoreconf -fi
-"${CONFIG[@]}" \
-	--disable-shared           \
-	--enable-static            \
+./configure --prefix=$PREFIX \
+    --build=$CHOST \
     --target=$CHOST \
     --host=$CHOST \
+	--disable-shared           \
+	--enable-static            \
 	CPPFLAGS="$CPPFLAGS"       \
 	CXXFLAGS="$CXXFLAGS"       \
 	CFLAGS="$CFLAGS"           \
@@ -262,10 +273,11 @@ github InnovAnon-Inc/cpuminer-yescrypt
 #cp -v cpu-miner.c{.lmaddox-iphone,}
 cp -v cpu-miner.c{.local-iphone,}
 ./autogen.sh
-"${CONFIG[@]}" \
+	#CPPFLAGS="-DCURL_STATICLIB $CPPFLAGS"
+./configure --prefix=$HOME \
+    --build=$CHOST \
     --target=$CHOST \
     --host=$CHOST \
-    --prefix=$HOME             \
 	--disable-shared           \
 	--enable-static            \
 	--disable-assembly         \
@@ -281,8 +293,9 @@ make install
 
 popd
 
-if true ; then
-pushd "$PREFIX/bin"
+if (( USE_PACKER )) ; then
+rm -rf $PREFIX/bin
+pushd "$HOME/bin"
 find . \
 	\( \! -iname '*.upx' \) \
 	-type f                 \
