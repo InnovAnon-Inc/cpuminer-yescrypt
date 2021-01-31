@@ -4,12 +4,12 @@ set -euvxo pipefail
 (( ! $#  ))
 
 INSTALL_DEPS=0
-BUILD_ZLIB=0
-BUILD_CRYPTO=0
-BUILD_CURL=0
-BUILD_JANSSON=0
+BUILD_ZLIB=1
+BUILD_CRYPTO=1
+BUILD_CURL=1
+BUILD_JANSSON=1
 USE_PACKER=1
-BUILD_STATIC=0
+BUILD_STATIC=1
 
 if (( INSTALL_DEPS )) ; then
   deps=(automake autoconf make gcc g++ libtool linux-headers)
@@ -92,6 +92,13 @@ function github {
 	fi
 	return $?
 }
+
+if (( BUILD_ZLIB    ))
+&& (( BUILD_CRYPTO  ))
+&& (( BUILD_CURL    ))
+&& (( BUILD_JANSSON )) ; then
+  rm -rf $PREFIX
+fi
 
 if (( BUILD_ZLIB )) ; then
   github madler/zlib
