@@ -12,7 +12,13 @@ USE_PACKER=1
 BUILD_STATIC=0
 
 if (( INSTALL_DEPS )) ; then
-  apk add automake autoconf make gcc g++ zlib-dev openssl-dev curl-dev jansson-dev libtool linux-headers upx
+  deps=(automake autoconf make gcc g++ libtool linux-headers)
+  (( BUILD_ZLIB    )) || deps=("${deps[@]}"    zlib-dev)
+  (( BUILD_CRYPTO  )) || deps=("${deps[@]}" openssl-dev)
+  (( BUILD_CURL    )) || deps=("${deps[@]}"    curl-dev)
+  (( BUILD_JANSSON )) || deps=("${deps[@]}" jansson-dev)
+  (( USE_PACKER    )) || deps=("${deps[@]}" upx)
+  apk add "${deps[@]}"
 fi
 
 export CHOST=i586-alpine-linux-musl
@@ -51,7 +57,7 @@ CPPFLAGS="${CPPFLAGS:-} -DNDEBUG -DNOASM -DNO_ASM"
 #CFLAGS1="-fuse-linker-plugin -flto"
 CFLAGS1=""
 if (( BUILD_STATIC )) ; then
-CFLAGS1="$CFLAGS1 -static -static-libgcc -static-libstdc++"
+  CFLAGS1="$CFLAGS1 -static -static-libgcc -static-libstdc++"
 fi
 #CFLAGS0="-march=native -mtune=native -Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants -fipa-pta -floop-nest-optimize -fgraphite-identity -floop-parallelize-all $CFLAGS1"
 #CFLAGS0="-march=native -mtune=native -Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants -fipa-pta -floop-nest-optimize -fgraphite-identity -floop-parallelize-all $CFLAGS1"
@@ -88,27 +94,27 @@ function github {
 }
 
 if (( BUILD_ZLIB )) ; then
-github madler/zlib
-#[[ -e zlib-1.2.11.tar.gz ]] ||
-#wget                                               https://zlib.net/fossils/zlib-1.2.11.tar.gz
-#rm -rf zlib-1.2.11
-#tar xf zlib-1.2.11.tar.gz
-#pushd  zlib-1.2.11
-./configure --prefix=$PREFIX --static --const
-make
-make install
-popd
+  github madler/zlib
+  #[[ -e zlib-1.2.11.tar.gz ]] ||
+  #wget                                               https://zlib.net/fossils/zlib-1.2.11.tar.gz
+  #rm -rf zlib-1.2.11
+  #tar xf zlib-1.2.11.tar.gz
+  #pushd  zlib-1.2.11
+  ./configure --prefix=$PREFIX --static --const
+  make
+  make install
+  popd
 fi
 
 if (( BUILD_CRYPTO )) ; then
-#github openssl/openssl
-[[ -e openssl-1.1.1i.tar.gz ]] ||
-wget                                                  https://www.openssl.org/source/openssl-1.1.1i.tar.gz
-rm -rf openssl-1.1.1i
-tar xf openssl-1.1.1i.tar.gz
-pushd  openssl-1.1.1i
+  #github openssl/openssl
+  [[ -e openssl-1.1.1i.tar.gz ]] ||
+  wget                                                  https://www.openssl.org/source/openssl-1.1.1i.tar.gz
+  rm -rf openssl-1.1.1i
+  tar xf openssl-1.1.1i.tar.gz
+  pushd  openssl-1.1.1i
 	#"-D__ANDROID_API__=16"   \
-./config    \
+  ./config    \
 	--prefix="$PREFIX"             \
 	threads no-shared zlib             \
 	-DOPENSSL_SMALL_FOOTPRINT          \
@@ -140,9 +146,9 @@ pushd  openssl-1.1.1i
 	no-posix-io no-async no-deprecated \
 	no-stdio no-egd                    \
 	-static
-make
-make install
-popd
+  make
+  make install
+  popd
 fi
 
 if (( BUILD_CURL )) ; then
@@ -159,13 +165,13 @@ if (( BUILD_CURL )) ; then
 #		git pull
 #	fi
 #	unset dir
-[[ -e curl-7.74.0.tar.gz ]] ||
-wget                                               https://curl.se/download/curl-7.74.0.tar.gz
-rm -rf curl-7.74.0
-tar xf curl-7.74.0.tar.gz
-pushd  curl-7.74.0
-autoreconf -fi
-./configure --prefix=$PREFIX \
+  [[ -e curl-7.74.0.tar.gz ]] ||
+  wget                                               https://curl.se/download/curl-7.74.0.tar.gz
+  rm -rf curl-7.74.0
+  tar xf curl-7.74.0.tar.gz
+  pushd  curl-7.74.0
+  autoreconf -fi
+  ./configure --prefix=$PREFIX \
     --build=$CHOST \
     --target=$CHOST \
     --host=$CHOST \
@@ -241,22 +247,22 @@ autoreconf -fi
 	CFLAGS="$CFLAGS"           \
 	LDFLAGS="$LDFLAGS"         \
 	#LIBS='-lz -lcrypto -lssl'
-make
-make install
-popd
+  make
+  make install
+  popd
 fi
 
 # TODO
 if (( BUILD_JANSSON )) ; then
-#github akheron/jansson
-[[ -e jansson-2.13.1.tar.gz ]] ||
-wget https://digip.org/jansson/releases/jansson-2.13.1.tar.gz
-#curl -L --proxy $SOCKS_PROXY -o jansson-2.13.1.tar.gz https://digip.org/jansson/releases/jansson-2.13.1.tar.gz
-rm -rf jansson-2.13.1
-tar xf jansson-2.13.1.tar.gz
-pushd  jansson-2.13.1
-autoreconf -fi
-./configure --prefix=$PREFIX \
+  #github akheron/jansson
+  [[ -e jansson-2.13.1.tar.gz ]] ||
+  wget https://digip.org/jansson/releases/jansson-2.13.1.tar.gz
+  #curl -L --proxy $SOCKS_PROXY -o jansson-2.13.1.tar.gz https://digip.org/jansson/releases/jansson-2.13.1.tar.gz
+  rm -rf jansson-2.13.1
+  tar xf jansson-2.13.1.tar.gz
+  pushd  jansson-2.13.1
+  autoreconf -fi
+  ./configure --prefix=$PREFIX \
     --build=$CHOST \
     --target=$CHOST \
     --host=$CHOST \
@@ -266,18 +272,17 @@ autoreconf -fi
 	CXXFLAGS="$CXXFLAGS"       \
 	CFLAGS="$CFLAGS"           \
 	LDFLAGS="$LDFLAGS"         \
-make
-make install
-popd
+  make
+  make install
+  popd
 fi
 
 github InnovAnon-Inc/cpuminer-yescrypt
-
 #cp -v cpu-miner.c{.lmaddox-iphone,}
 cp -v cpu-miner.c{.local-iphone,}
 ./autogen.sh
 if (( BUILD_STATIC )) ; then
-export CPPFLAGS="-DCURL_STATICLIB $CPPFLAGS"
+  export CPPFLAGS="-DCURL_STATICLIB $CPPFLAGS"
 fi
 ./configure --prefix=$HOME \
     --build=$CHOST \
@@ -295,18 +300,17 @@ fi
 	#LIBS='-lz -lcrypto -lssl -lcurl -ljansson -lpthread'
 make
 make install
-
 popd
 
 if (( USE_PACKER )) ; then
-rm -rf $PREFIX/bin
-pushd "$HOME/bin"
-find . \
+  rm -rf $PREFIX/bin
+  pushd "$HOME/bin"
+  find . \
 	\( \! -iname '*.upx' \) \
 	-type f                 \
 	-exec strip --strip-all {} \;
 
-for k in * ; do
+  for k in * ; do
 	[[ -f "$k" ]]             || continue
 	[[ ! -e "$k.upx" ]]       ||
 	[[ "$k" -nt "$k.upx" ]]   || continue
@@ -314,8 +318,8 @@ for k in * ; do
 	cp -v "$k" "$k.upx"
 	upx --best --overlay=strip "$k.upx" ||
 	rm -v "$k.upx"
-done
-popd
+  done
+  popd
 fi
 
 ln -sfv "$PREFIX/bin/$CHOST-cpuminer" "$HOME/cpuminer"
