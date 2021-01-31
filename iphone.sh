@@ -322,6 +322,6 @@ if (( USE_PACKER )) ; then
   popd
 fi
 
-ln -sfv "$PREFIX/bin/$CHOST-cpuminer" "$HOME/cpuminer"
+ln -sfv "$HOME/bin/$CHOST-cpuminer" "$HOME/cpuminer"
 ~/cpuminer
 
