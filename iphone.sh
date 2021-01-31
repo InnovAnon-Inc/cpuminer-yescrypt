@@ -93,9 +93,9 @@ function github {
 	return $?
 }
 
-if (( BUILD_ZLIB    ))
-&& (( BUILD_CRYPTO  ))
-&& (( BUILD_CURL    ))
+if (( BUILD_ZLIB    )) \
+&& (( BUILD_CRYPTO  )) \
+&& (( BUILD_CURL    )) \
 && (( BUILD_JANSSON )) ; then
   rm -rf $PREFIX
 fi
