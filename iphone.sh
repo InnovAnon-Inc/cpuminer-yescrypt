@@ -292,7 +292,11 @@ cp -v cpu-miner.c{.local-iphone,}
 	--disable-shared           \
 	--enable-static            \
 	--disable-assembly         \
+    --with-crypto=$PREFIX      \
+    --with-curl=$PREFIX        \
 	CPPFLAGS="$CPPFLAGS" \
+	CXXFLAGS="$CXXFLAGS" \
+	CFLAGS="$CFLAGS" \
 	LDFLAGS="$LDFLAGS"         \
 	LIBS='-lz -lcrypto -lssl -lcurl -ljansson -lpthread'
 make
