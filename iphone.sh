@@ -3,7 +3,7 @@ set -euvxo pipefail
 (( ! UID ))
 (( ! $#  ))
 
-apk add automake autoconf make gcc g++ zlib-dev openssl-dev curl-dev jansson-dev
+apk add automake autoconf make gcc g++ zlib-dev openssl-dev curl-dev jansson-dev libtool linux-headers
 
 #PREFIX="${PREFIX:-/data/data/com.termux/files/usr/local}"
 PREFIX="${PREFIX:-/usr/local}"
@@ -223,8 +223,6 @@ autoreconf -fi
 	CXXFLAGS="$CXXFLAGS"       \
 	CFLAGS="$CFLAGS"           \
 	LDFLAGS="$LDFLAGS"         \
-	CC="$CC"                   \
-	CXX="$CXX"
 	#LIBS='-lz -lcrypto -lssl'
 make
 make install
@@ -247,8 +245,6 @@ autoreconf -fi
 	CXXFLAGS="$CXXFLAGS"       \
 	CFLAGS="$CFLAGS"           \
 	LDFLAGS="$LDFLAGS"         \
-	CC="$CC"                   \
-	CXX="$CXX"
 make
 make install
 popd
