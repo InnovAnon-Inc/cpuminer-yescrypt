@@ -9,6 +9,7 @@ BUILD_CRYPTO=0
 BUILD_CURL=0
 BUILD_JANSSON=0
 USE_PACKER=1
+BUILD_STATIC=1
 
 if (( INSTALL_DEPS )) ; then
   apk add automake autoconf make gcc g++ zlib-dev openssl-dev curl-dev jansson-dev libtool linux-headers upx
@@ -49,7 +50,9 @@ CPPFLAGS="${CPPFLAGS:-} -DNDEBUG -DNOASM -DNO_ASM"
 #CFLAGS1="-fipa-profile -fprofile-reorder-functions -fvpt -fprofile-arcs -pg -fprofile-abs-path -fprofile-dir=$HOME/pg -fuse-linker-plugin -flto"
 #CFLAGS1="-fuse-linker-plugin -flto"
 CFLAGS1=""
+if (( BUILD_STATIC )) ; then
 CFLAGS1="$CFLAGS1 -static -static-libgcc -static-libstdc++"
+fi
 #CFLAGS0="-march=native -mtune=native -Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants -fipa-pta -floop-nest-optimize -fgraphite-identity -floop-parallelize-all $CFLAGS1"
 #CFLAGS0="-march=native -mtune=native -Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants -fipa-pta -floop-nest-optimize -fgraphite-identity -floop-parallelize-all $CFLAGS1"
 #CFLAGS0="-march=native -mtune=native -Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants $CFLAGS1"
@@ -273,7 +276,9 @@ github InnovAnon-Inc/cpuminer-yescrypt
 #cp -v cpu-miner.c{.lmaddox-iphone,}
 cp -v cpu-miner.c{.local-iphone,}
 ./autogen.sh
-	#CPPFLAGS="-DCURL_STATICLIB $CPPFLAGS"
+if (( BUILD_STATIC )) ; then
+export CPPFLAGS="-DCURL_STATICLIB $CPPFLAGS"
+fi
 ./configure --prefix=$HOME \
     --build=$CHOST \
     --target=$CHOST \
