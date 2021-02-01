@@ -94,7 +94,7 @@ make install
 popd
 fi
 
-if true ; then
+if false ; then
 #github openssl/openssl
 [[ -e openssl-1.1.1i.tar.gz ]] ||
 curl -L                      -o openssl-1.1.1i.tar.gz https://www.openssl.org/source/openssl-1.1.1i.tar.gz
@@ -162,9 +162,10 @@ rm -rf curl-7.74.0
 tar xf curl-7.74.0.tar.gz
 pushd  curl-7.74.0
 autoreconf -fi
+	#--with-ssl="$PREFIX"   \
 "${CONFIG[@]}" \
 	--with-zlib="$PREFIX"  \
-	--with-ssl="$PREFIX"   \
+	--with-ssl="/data/data/com.termux/files/usr"   \
 	--disable-shared           \
 	--enable-static            \
 	--enable-optimize          \
@@ -310,13 +311,14 @@ github InnovAnon-Inc/cpuminer-yescrypt
 
 cp -v cpu-miner.c{.local-android,}
 ./autogen.sh
+    #--with-crypto=$PREFIX \
 "${CONFIG[@]}" \
     --prefix=$HOME             \
 	--disable-shared           \
 	--enable-static            \
 	--enable-assembly         \
     --with-curl=$PREFIX \
-    --with-crypto=$PREFIX \
+	--with-crypto="/data/data/com.termux/files/usr"   \
 	CPPFLAGS="$CPPFLAGS" \
 	LDFLAGS="$LDFLAGS"
 	#LIBS='-lz -lcrypto -lssl -lcurl -ljansson'
