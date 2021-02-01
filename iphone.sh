@@ -9,7 +9,7 @@ BUILD_CRYPTO=0
 BUILD_CURL=0
 BUILD_JANSSON=0
 USE_PACKER=1
-BUILD_STATIC=1
+BUILD_STATIC=0
 
 if (( INSTALL_DEPS )) ; then
   deps=(automake autoconf make gcc g++ libtool linux-headers)
