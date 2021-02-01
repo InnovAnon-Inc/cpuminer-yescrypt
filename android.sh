@@ -113,7 +113,8 @@ pushd  openssl-1.1.1i
 	no-posix-io no-async no-deprecated \
 	no-stdio no-egd                    \
 	-static \
-    android-arm
+    linux-x86
+    #android-arm
 make
 make install
 popd
