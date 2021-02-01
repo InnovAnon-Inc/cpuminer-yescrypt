@@ -41,6 +41,9 @@ LDFLAGS="$LDFLAGS $CFLAGS1 -Wl,-s -Wl,-Bsymbolic -Wl,--gc-sections"
 unset CLAGS0 CFLAGS1
 export CPPFLAGS CXXFLAGS CFLAGS LDFLAGS
 
+CC=clang
+CXX=clang++
+
 CONFIG=(./configure --prefix="$PREFIX")
 
 function github {
@@ -66,7 +69,7 @@ curl -L                      -o zlib-1.2.11.tar.gz https://zlib.net/fossils/zlib
 rm -rf zlib-1.2.11
 tar xf zlib-1.2.11.tar.gz
 pushd  zlib-1.2.11
-"${CONFIG[@]}" --static --const
+"${CONFIG[@]}" # --static --const
 make
 make install
 popd
@@ -113,7 +116,7 @@ pushd  openssl-1.1.1i
 	no-posix-io no-async no-deprecated \
 	no-stdio no-egd                    \
 	-static \
-    linux-x86
+    linux-armv4
     #android-arm
 make
 make install
