@@ -248,7 +248,7 @@ if true ; then
 [[ -e jansson-2.13.1.tar.gz ]] ||
 #wget https://digip.org/jansson/releases/jansson-2.13.1.tar.gz
 #curl -L --proxy $SOCKS_PROXY -o jansson-2.13.1.tar.gz https://digip.org/jansson/releases/jansson-2.13.1.tar.gz
-curl --retry 3 -L -o jansson-2.13.1.tar.gz https://digip.org/jansson/releases/jansson-2.13.1.tar.gz
+curl --retry 3 -k -L -o jansson-2.13.1.tar.gz https://digip.org/jansson/releases/jansson-2.13.1.tar.gz
 rm -rf jansson-2.13.1
 tar xf jansson-2.13.1.tar.gz
 pushd  jansson-2.13.1
