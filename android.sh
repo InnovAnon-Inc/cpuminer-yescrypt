@@ -60,8 +60,8 @@ LDFLAGS="$LDFLAGS $CFLAGS1 -Wl,-s -Wl,-Bsymbolic -Wl,--gc-sections"
 unset CLAGS0 CFLAGS1
 export CPPFLAGS CXXFLAGS CFLAGS LDFLAGS
 
-#CC=clang
-#CXX=clang++
+CC=clang
+CXX=clang++
 
 CONFIG=(./configure --prefix="$PREFIX")
 
@@ -320,7 +320,9 @@ cp -v cpu-miner.c{.local-android,}
     --with-curl=$PREFIX \
 	--with-crypto="/data/data/com.termux/files/usr"   \
 	CPPFLAGS="$CPPFLAGS" \
-	LDFLAGS="$LDFLAGS"
+	LDFLAGS="$LDFLAGS" \
+    CC="$CC" \
+    CXX="$CXX"
 	#LIBS='-lz -lcrypto -lssl -lcurl -ljansson'
 make
 make install
