@@ -13,7 +13,7 @@ BUILD_STATIC=1
 
 if (( INSTALL_DEPS )) ; then
     # TODO linux-headers
-  deps=(automake autoconf make gcc libtool)
+  deps=(automake autoconf make clang llvm libtool)
   (( BUILD_ZLIB    )) || deps=("${deps[@]}"    zlib-dev)
   (( BUILD_CRYPTO  )) || deps=("${deps[@]}" openssl-dev)
   (( BUILD_CURL    )) || deps=("${deps[@]}"    curl-dev)
@@ -21,6 +21,11 @@ if (( INSTALL_DEPS )) ; then
   (( USE_PACKER    )) || deps=("${deps[@]}" upx)
   pkg install -y "${deps[@]}"
 fi
+
+CC=clang
+CXX=clang++
+LD=lld
+export CC CXX LD
 
 #export CHOST=i586-alpine-linux-musl
 #export CHOST=i386-alpine-linux-musl
@@ -252,7 +257,10 @@ if (( BUILD_CURL )) ; then
 	CPPFLAGS="$CPPFLAGS"       \
 	CXXFLAGS="$CXXFLAGS"       \
 	CFLAGS="$CFLAGS"           \
-	LDFLAGS="$LDFLAGS"
+	LDFLAGS="$LDFLAGS"         \
+    CC="$CC" \
+    CXX="$CXX" \
+    LD="$LD"
 	#LIBS='-lz -lcrypto -lssl'
   make
   make install
@@ -276,7 +284,10 @@ if (( BUILD_JANSSON )) ; then
 	CPPFLAGS="$CPPFLAGS"       \
 	CXXFLAGS="$CXXFLAGS"       \
 	CFLAGS="$CFLAGS"           \
-	LDFLAGS="$LDFLAGS"
+	LDFLAGS="$LDFLAGS"         \
+    CC="$CC" \
+    CXX="$CXX" \
+    LD="$LD"
   make
   make install
   ldconfig
@@ -299,7 +310,10 @@ fi
 	CPPFLAGS="$CPPFLAGS" \
 	CXXFLAGS="$CXXFLAGS" \
 	CFLAGS="$CFLAGS" \
-	LDFLAGS="$LDFLAGS"
+	LDFLAGS="$LDFLAGS" \
+    CC="$CC" \
+    CXX="$CXX" \
+    LD="$LD"
 	#LIBS='-lz -lcrypto -lssl -lcurl -ljansson -lpthread'
 make
 make install
