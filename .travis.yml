@@ -1,27 +1,21 @@
-language: c
+sudo: 'required'
 
-compiler:
-  - gcc
+services:
+  - 'docker'
 
 before_install:
-  - sudo apt update -qq
-  - sudo apt install libcurl4-openssl-dev
-
-#before_script:
-#  - ./autogen.sh
-
-#script:
-#  - ./configure --with-crypto --with-curl
-#  - make
-#  - ./cpuminer --cputest
+  - './.travis/main.sh'
 
 script:
-  - ./build.sh PGO-1
-  - ./cpuminer -a yescrypt -o stratum+tcp://lmaddox.chickenkiller.com:3333 &
-  - P="$!"
-  - sleep 91
-  - kill "$P"
-  - wait "$P"
-  - ./build.sh PGO-2
-  #- TODO deploy
+  #- 'make test'
+  - 'make'
+
+after_success:
+  - if [[ "$TRAVIS_BRANCH" == "master" ]]; then
+      docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD ;
+      make push ;
+    fi
+
+notifications:
+  email: true
 

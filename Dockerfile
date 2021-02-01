@@ -157,23 +157,23 @@ RUN sleep 91 \
 #ENV LD=
 #ENV AS=
         #--cross-compile-prefix=$CHOST-                \
+#	no-rmd160 no-sctp no-dso no-ssl2              \
+#	no-ssl3 no-comp no-idea no-dtls               \
+#	no-dtls1 no-err no-psk no-srp                 \
+#	no-ec2m no-weak-ssl-ciphers                   \
+#	no-afalgeng no-autoalginit                    \
+#	no-engine no-ec no-ecdsa no-ecdh              \
+#	no-deprecated no-capieng no-des               \
+#	no-bf no-dsa no-camellia no-cast              \
+#	no-gost no-md2 no-md4 no-rc2                  \
+#	no-rc4 no-rc5 no-whirlpool                    \
+#	no-autoerrinit no-blake2 no-chacha            \
+#	no-cmac no-cms no-crypto-mdebug               \
 RUN sleep 91                                          \
  && git clone --depth=1 --recursive -b OpenSSL_1_1_1i \
       https://github.com/openssl/openssl.git          \
  && cd                           openssl              \
  && ./Configure --prefix=$PREFIX                      \
-	no-rmd160 no-sctp no-dso no-ssl2              \
-	no-ssl3 no-comp no-idea no-dtls               \
-	no-dtls1 no-err no-psk no-srp                 \
-	no-ec2m no-weak-ssl-ciphers                   \
-	no-afalgeng no-autoalginit                    \
-	no-engine no-ec no-ecdsa no-ecdh              \
-	no-deprecated no-capieng no-des               \
-	no-bf no-dsa no-camellia no-cast              \
-	no-gost no-md2 no-md4 no-rc2                  \
-	no-rc4 no-rc5 no-whirlpool                    \
-	no-autoerrinit no-blake2 no-chacha            \
-	no-cmac no-cms no-crypto-mdebug               \
 	no-ct no-crypto-mdebug-backtrace              \
 	no-dgram no-dtls1-method                      \
 	no-dynamic-engine no-egd                      \
@@ -312,7 +312,7 @@ RUN ls -ltra $PREFIX/lib | grep libcrypto.a
 #RUN sleep 91 \
 # && git clone --depth=1 --recursive                   \
 #      https://github.com/InnovAnon-Inc/cpuminer-yescrypt.git \
-COPY ./ ./
+COPY ./ ./cpuminer-yescrypt
 RUN cd                                 cpuminer-yescrypt     \
  && ./autogen.sh                                             \
  && ./configure --prefix=$PREFIX                             \
@@ -333,6 +333,7 @@ RUN cd                                 cpuminer-yescrypt     \
         LD_RUN_PATH="$LD_RUN_PATH"                    \
         PKG_CONFIG_LIBDIR="$PKG_CONFIG_LIBDIR"        \
         PKG_CONFIG_PATH="$PKG_CONFIG_PATH"            \
+        LIBS='-lz -lcrypto -lcrypto -ljansson' \
  && cd $PREFIX                                               \
  && rm -rf etc man share ssl
 

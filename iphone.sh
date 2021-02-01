@@ -21,7 +21,8 @@ if (( INSTALL_DEPS )) ; then
   apk add "${deps[@]}"
 fi
 
-export CHOST=i586-alpine-linux-musl
+#export CHOST=i586-alpine-linux-musl
+export CHOST=i386-alpine-linux-musl
 
 #PREFIX="${PREFIX:-/data/data/com.termux/files/usr/local}"
 PREFIX="${PREFIX:-/usr/local}"
@@ -118,7 +119,8 @@ if (( BUILD_CRYPTO )) ; then
   tar xf openssl-1.1.1i.tar.gz
   pushd  openssl-1.1.1i
 	#"-D__ANDROID_API__=16"   \
-  ./config    \
+  #./config    \
+  ./Configure \
 	--prefix="$PREFIX"             \
 	threads no-shared zlib             \
 	-DOPENSSL_SMALL_FOOTPRINT          \
@@ -149,7 +151,8 @@ if (( BUILD_CRYPTO )) ; then
 	no-unit-test no-whirlpool          \
 	no-posix-io no-async no-deprecated \
 	no-stdio no-egd                    \
-	-static
+	-static \
+    linux-x32
   make
   make install
   popd
