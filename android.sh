@@ -3,33 +3,11 @@ set -euvxo pipefail
 ((   UID ))
 (( ! $#  ))
 
-INSTALL_DEPS=1
-BUILD_ZLIB=1
-BUILD_CRYPTO=1
-BUILD_CURL=1
-BUILD_JANSSON=1
-USE_PACKER=1
-BUILD_STATIC=1
-
-if (( INSTALL_DEPS )) ; then
-    # TODO linux-headers
-  deps=(automake autoconf make gcc libtool)
-  (( BUILD_ZLIB    )) || deps=("${deps[@]}"    zlib-dev)
-  (( BUILD_CRYPTO  )) || deps=("${deps[@]}" openssl-dev)
-  (( BUILD_CURL    )) || deps=("${deps[@]}"    curl-dev)
-  (( BUILD_JANSSON )) || deps=("${deps[@]}" jansson-dev)
-  (( USE_PACKER    )) || deps=("${deps[@]}" upx)
-  pkg install -y "${deps[@]}"
-fi
-
-#export CHOST=i586-alpine-linux-musl
-#export CHOST=i386-alpine-linux-musl
+pkg install -y automake autoconf make zlib openssl curl libjansson
 
 PREFIX="${PREFIX:-/data/data/com.termux/files/usr/local}"
-#PREFIX="${PREFIX:-/usr/local}"
-#PREFIX="${PREFIX:-$HOME}"
-#export PATH="$PREFIX/bin:$PATH"
-#
+export PATH="$PREFIX/bin:$PATH"
+
 LP="$PREFIX/include"
 CPPFLAGS="-I$LP ${CPPFLAGS:-}"
 CPATH="$LP:${CPATH:-}"
@@ -45,39 +23,25 @@ LIBRARY_PATH="$LP:${LIBRARY_PATH:-}"
 LD_LIBRARY_PATH="$LP:${LD_LIBRARY_PATH:-}"
 LD_RUN_PATH="$LP:${LD_RUN_PATH:-}"
 unset LP
-#
+
 PKG_CONFIG_LIBDIR="$PREFIX/lib/pkgconfig:${PKG_CONFIG_LIBDIR:-}"
 PKG_CONFIG_PATH="$PREFIX/share/pkgconfig:$PKG_CONFIG_LIBDIR:${PKG_CONFIG_PATH:-}"
-#
+
 export PREFIX
 export CPPFLAGS CPATH C_INCLUDE_PATH CPLUS_INCLUDE_PATH OBJC_INCLUDE_PATH
 export LDFLAGS LIBRARY_PATH LD_LIBRARY_PATH LD_RUN_PATH
 export PKG_CONFIG_LIBDIR PKG_CONFIG_PATH
 
-CPPFLAGS="${CPPFLAGS:-} -DNDEBUG -DNOASM -DNO_ASM"
-#CFLAGS1="-fipa-profile -fprofile-reorder-functions -fvpt -fprofile-arcs -pg -fprofile-abs-path -fprofile-dir=$HOME/pg -fuse-linker-plugin -flto"
-#CFLAGS1="-fuse-linker-plugin -flto"
+CPPFLAGS="$CPPFLAGS -DNDEBUG"
 CFLAGS1=""
-if (( BUILD_STATIC )) ; then
-  CFLAGS1="$CFLAGS1 -static -static-libgcc -static-libstdc++"
-fi
-#CFLAGS0="-march=native -mtune=native -Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants -fipa-pta -floop-nest-optimize -fgraphite-identity -floop-parallelize-all $CFLAGS1"
-#CFLAGS0="-march=native -mtune=native -Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants -fipa-pta -floop-nest-optimize -fgraphite-identity -floop-parallelize-all $CFLAGS1"
-#CFLAGS0="-march=native -mtune=native -Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants $CFLAGS1"
-#CFLAGS0="-march=native -mtune=native -Ofast -g0 -fmerge-all-constants $CFLAGS1"
-#CFLAGS0="-Ofast -g0 -fmerge-all-constants $CFLAGS1"
-#CFLAGS0="-Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants -fipa-pta -floop-nest-optimize -fgraphite-identity -floop-parallelize-all $CFLAGS1"
-#CFLAGS0="-Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants $CFLAGS1"
-#CFLAGS0="-Ofast -g0 -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants $CFLAGS1"
-#CFLAGS0="-Ofast -g0 $CFLAGS1"
-CFLAGS0="-m32 $CFLAGS1"
-#CFLAGS0="-march=pentium4 $CFLAGS0"
+CFLAGS0="-Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants $CFLAGS1"
 CFLAGS="${CFLAGS:-} $CFLAGS0"
 CXXFLAGS="${CXXFLAGS:-} $CFLAGS0"
-#LDFLAGS="${LDFLAGS:-} $CFLAGS1 -Wl,-s -Wl,-Bsymbolic -Wl,--gc-sections"
-LDFLAGS="${LDFLAGS:-} $CFLAGS1"
+LDFLAGS="$LDFLAGS $CFLAGS1 -Wl,-s -Wl,-Bsymbolic -Wl,--gc-sections"
 unset CLAGS0 CFLAGS1
 export CPPFLAGS CXXFLAGS CFLAGS LDFLAGS
+
+CONFIG=(./configure --prefix="$PREFIX")
 
 function github {
 	(( $# == 1 ))
@@ -95,34 +59,29 @@ function github {
 	return $?
 }
 
-#if (( BUILD_ZLIB )) && (( BUILD_CRYPTO )) && (( BUILD_CURL )) && (( BUILD_JANSSON )) ; then
-#  rm -rf $PREFIX
-#fi
-
-if (( BUILD_ZLIB )) ; then
-  github madler/zlib
-  #[[ -e zlib-1.2.11.tar.gz ]] ||
-  #wget                                               https://zlib.net/fossils/zlib-1.2.11.tar.gz
-  #rm -rf zlib-1.2.11
-  #tar xf zlib-1.2.11.tar.gz
-  #pushd  zlib-1.2.11
-  ./configure --prefix=$PREFIX --static --const
-  make
-  make install
-  ldconfig
-  popd
+if true ; then
+#github madler/zlib
+[[ -e zlib-1.2.11.tar.gz ]] ||
+curl -L                      -o zlib-1.2.11.tar.gz https://zlib.net/fossils/zlib-1.2.11.tar.gz
+rm -rf zlib-1.2.11
+tar xf zlib-1.2.11.tar.gz
+pushd  zlib-1.2.11
+"${CONFIG[@]}" --static --const
+make
+make install
+popd
 fi
 
-if (( BUILD_CRYPTO )) ; then
-  #github openssl/openssl
-  [[ -e openssl-1.1.1i.tar.gz ]] ||
-  wget                                                  https://www.openssl.org/source/openssl-1.1.1i.tar.gz
-  rm -rf openssl-1.1.1i
-  tar xf openssl-1.1.1i.tar.gz
-  pushd  openssl-1.1.1i
+if true ; then
+#github openssl/openssl
+[[ -e openssl-1.1.1i.tar.gz ]] ||
+curl -L                      -o openssl-1.1.1i.tar.gz https://www.openssl.org/source/openssl-1.1.1i.tar.gz
+rm -rf openssl-1.1.1i
+tar xf openssl-1.1.1i.tar.gz
+pushd  openssl-1.1.1i
 	#"-D__ANDROID_API__=16"   \
-  #./config    \
-  ./Configure \
+#./config    \
+./Configure \
 	--prefix="$PREFIX"             \
 	threads no-shared zlib             \
 	-DOPENSSL_SMALL_FOOTPRINT          \
@@ -154,14 +113,13 @@ if (( BUILD_CRYPTO )) ; then
 	no-posix-io no-async no-deprecated \
 	no-stdio no-egd                    \
 	-static \
-    linux-x86-clang
-  make
-  make install
-  ldconfig
-  popd
+    linux-android
+make
+make install
+popd
 fi
 
-if (( BUILD_CURL )) ; then
+if true ; then
 ##github curl/curl
 #	dir="$(basename "curl/curl")"
 #	if [[ ! -d "$dir" ]] ; then
@@ -175,13 +133,13 @@ if (( BUILD_CURL )) ; then
 #		git pull
 #	fi
 #	unset dir
-  [[ -e curl-7.74.0.tar.gz ]] ||
-  wget                                               https://curl.se/download/curl-7.74.0.tar.gz
-  rm -rf curl-7.74.0
-  tar xf curl-7.74.0.tar.gz
-  pushd  curl-7.74.0
-  autoreconf -fi
-  ./configure --prefix=$PREFIX \
+[[ -e curl-7.74.0.tar.gz ]] ||
+curl -L                      -o curl-7.74.0.tar.gz https://curl.se/download/curl-7.74.0.tar.gz
+rm -rf curl-7.74.0
+tar xf curl-7.74.0.tar.gz
+pushd  curl-7.74.0
+autoreconf -fi
+"${CONFIG[@]}" \
 	--with-zlib="$PREFIX"  \
 	--with-ssl="$PREFIX"   \
 	--disable-shared           \
@@ -252,129 +210,115 @@ if (( BUILD_CURL )) ; then
 	CPPFLAGS="$CPPFLAGS"       \
 	CXXFLAGS="$CXXFLAGS"       \
 	CFLAGS="$CFLAGS"           \
-	LDFLAGS="$LDFLAGS"
+	LDFLAGS="$LDFLAGS"         \
+	CC="$CC"                   \
+	CXX="$CXX"
 	#LIBS='-lz -lcrypto -lssl'
-  make
-  make install
-  ldconfig
-  popd
+make
+make install
+popd
 fi
 
-# TODO
-if (( BUILD_JANSSON )) ; then
-  #github akheron/jansson
-  [[ -e jansson-2.13.1.tar.gz ]] ||
-  wget https://digip.org/jansson/releases/jansson-2.13.1.tar.gz
-  #curl -L --proxy $SOCKS_PROXY -o jansson-2.13.1.tar.gz https://digip.org/jansson/releases/jansson-2.13.1.tar.gz
-  rm -rf jansson-2.13.1
-  tar xf jansson-2.13.1.tar.gz
-  pushd  jansson-2.13.1
-  autoreconf -fi
-  ./configure --prefix=$PREFIX \
+if true ; then
+#github akheron/jansson
+[[ -e jansson-2.13.1.tar.gz ]] ||
+wget https://digip.org/jansson/releases/jansson-2.13.1.tar.gz
+#curl -L --proxy $SOCKS_PROXY -o jansson-2.13.1.tar.gz https://digip.org/jansson/releases/jansson-2.13.1.tar.gz
+rm -rf jansson-2.13.1
+tar xf jansson-2.13.1.tar.gz
+pushd  jansson-2.13.1
+autoreconf -fi
+"${CONFIG[@]}" \
 	--disable-shared           \
 	--enable-static            \
 	CPPFLAGS="$CPPFLAGS"       \
 	CXXFLAGS="$CXXFLAGS"       \
 	CFLAGS="$CFLAGS"           \
-	LDFLAGS="$LDFLAGS"
-  make
-  make install
-  ldconfig
-  popd
-fi
-
-github InnovAnon-Inc/cpuminer-yescrypt
-#cp -v cpu-miner.c{.lmaddox-iphone,}
-cp -v cpu-miner.c{.local-android,}
-./autogen.sh
-if (( BUILD_STATIC )) ; then
-  export CPPFLAGS="-DCURL_STATICLIB $CPPFLAGS"
-fi
-./configure --prefix=$HOME \
-	--disable-shared           \
-	--enable-static            \
-	--disable-assembly         \
-    --with-crypto=$PREFIX      \
-    --with-curl=$PREFIX        \
-	CPPFLAGS="$CPPFLAGS" \
-	CXXFLAGS="$CXXFLAGS" \
-	CFLAGS="$CFLAGS" \
-	LDFLAGS="$LDFLAGS"
-	#LIBS='-lz -lcrypto -lssl -lcurl -ljansson -lpthread'
+	LDFLAGS="$LDFLAGS"         \
+	CC="$CC"                   \
+	CXX="$CXX"
 make
 make install
 popd
+fi
 
-if (( USE_PACKER )) ; then
-  rm -rf $PREFIX/bin
-  pushd "$HOME/bin"
-  find . \
+github InnovAnon-Inc/cpuminer-yescrypt
+#github tpruvot/cpuminer-multi
+
+#sed -i \
+#	-e 's@\(^bool have_stratum = \)false\(;\)@\1true\2@' \
+#	-e 's@\(^bool opt_randomize = \)false\(;\)@\1true\2@' \
+#	-e 's@\(^static enum algos opt_algo = \)ALGO_SCRYPT\(;\)@\1ALGO_YESCRYPT\2@' \
+#	-e 's#\(printf("** " PACKAGE_NAME " " PACKAGE_VERSION " by \)tpruvot@github\( **\n");\)#\1InnovAnon-Inc@protonmail.com\2#' \
+#	-e 's@\(printf("BTC donation address: \)1FhDPLPpw18X4srecguG3MxJYe4a1JsZnd (tpruvot)\(\n\n");\)@\119X2uN5AyUUyVGbeNh1tpAi8HzUrgGZhXW (InnovAnon, Inc.)\2@'
+#        -e 's@/* parse command line */@
+#	rpc_url = strdup ("stratum+tcp://192.168.1.69:3333");
+#	short_url = rpc_url + 8;
+#	rpc_user = strdup ("");
+#	rpc_userpass = strdup ("");@' \
+#	cpu-miner.c
+
+#sed -i -f "$PREFIX/cpuminer-multi.sed" cpu-miner.c
+
+# low power settings
+#	-e 's@\(^int opt_n_threads = \)0\(;\)@\11\2@'         \
+#	-e 's@\(^int64_t opt_affinity = \)-1L\(;\)@\10x01\2@' \
+#	-e 's@\(^int opt_priority = \)5\(;\)@\11\2@'          \
+
+# local settings
+#	-e 's@\(rpc_url  *= strdup ("stratum+tcp://\)lmaddox.chickenkiller.com:3333\(");\)@\1192.168.1.69\2@' \
+
+#sed -i \
+#	-e 's@\(^long opt_proxy_type\) = CURLPROXY_SOCKS5\(;\)@\1\2@' \
+#	-e 's@opt_proxy = strdup ("socks5h://127.0.0.1:9050");@@'   \
+#	cpu-miner.c
+#cp -v cpu-miner.c{.local-nice,}
+
+#CPPFLAGS="$CPPFLAGS -DCURL_STATICLIB"
+#CFLAGS1="-fipa-profile -fprofile-reorder-functions -fvpt -fprofile-arcs -pg -fprofile-abs-path -fprofile-dir=$HOME/pg -fuse-linker-plugin -flto"
+#CFLAGS1="-fuse-linker-plugin -flto"
+#CFLAGS0="-march=native -mtune=native -Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants -fipa-pta -floop-nest-optimize -fgraphite-identity -floop-parallelize-all $CFLAGS1"
+#CFLAGS0="-march=native -mtune=native -Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants -fipa-pta -floop-nest-optimize -fgraphite-identity -floop-parallelize-all $CFLAGS1"
+#CFLAGS0="-march=native -mtune=native -Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants $CFLAGS1"
+#CFLAGS0="-march=native -mtune=native -Ofast -g0 -fmerge-all-constants $CFLAGS1"
+#CFLAGS0="-Ofast -g0 -fmerge-all-constants $CFLAGS1"
+#CFLAGS0="-Ofast -g0 -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants -fipa-pta -floop-nest-optimize -fgraphite-identity -floop-parallelize-all $CFLAGS1"
+#LDFLAGS="$LDFLAGS $CFLAGS1"
+
+cp -v cpu-miner.c{.local-android,}
+./autogen.sh
+"${CONFIG[@]}" \
+    --prefix=$HOME             \
+	--disable-shared           \
+	--enable-static            \
+	--enable-assembly         \
+    --with-curl=$PREFIX \
+    --with-crypto=$PREFIX \
+	CPPFLAGS="$CPPFLAGS" \
+	LDFLAGS="$LDFLAGS"
+	#LIBS='-lz -lcrypto -lssl -lcurl -ljansson'
+make
+make install
+
+popd
+
+if true ; then
+    rm -rf $PREFIX/bin
+find "$HOME/bin" \
 	\( \! -iname '*.upx' \) \
 	-type f                 \
 	-exec strip --strip-all {} \;
 
-  for k in * ; do
-	[[ -f "$k" ]]             || continue
-	[[ ! -e "$k.upx" ]]       ||
-	[[ "$k" -nt "$k.upx" ]]   || continue
-	[[ "${k/.upx/}" = "$k" ]] || continue
-	cp -v "$k" "$k.upx"
-	upx --best --overlay=strip "$k.upx" ||
-	rm -v "$k.upx"
-  done
-  popd
+#pushd "$HOME/bin"
+#for k in * ; do
+#	[[ -f "$k" ]]             || continue
+#	[[ ! -e "$k.upx" ]]       ||
+#	[[ "$k" -nt "$k.upx" ]]   || continue
+#	[[ "${k/.upx/}" = "$k" ]] || continue
+#	cp -v "$k" "$k.upx"
+#	upx --best --overlay=strip "$k.upx" ||
+#	rm -v "$k.upx"
+#done
+#popd
 fi
-
-ln -sfv "$HOME/bin/cpuminer" "$HOME/cpuminer"
-~/cpuminer
-
-##! /bin/sh
-#set -evx
-#
-#CPPFLAGS="$CPPFLAGS -DNDEBUG"
-##CFLAGS0="-march=native -mtune=native -fipa-profile -fprofile-reorder-functions -fvpt -fprofile-arcs -pg -fprofile-abs-path -fprofile-dir=$HOME/pg -Ofast -g0 -fuse-linker-plugin -flto -ffunction-sections -fdata-sections -ffast-math -fassociative-math -freciprocal-math -fmerge-all-constants -fipa-pta -floop-nest-optimize -fgraphite-identity -floop-parallelize-all"
-#CFLAGS1=""
-#CFLAGS0=""
-#CFLAGS="$CFLAGS $CFLAGS0"
-#CXXFLAGS="$CXXFLAGS $CFLAGS0"
-##LDFLAGS="$LDFLAGS -fipa-profile -fprofile-reorder-functions -fvpt -fprofile-arcs -pg -fprofile-abs-path -fprofile-dir=$HOME/pg -fuse-linker-plugin -flto -Wl,-s -Wl,-Bsymbolic -Wl,--gc-sections"
-#LDFLAGS="$LDFLAGS $CFLAGS1"
-#unset CLAGS0 CFLAGS1
-#export CPPFLAGS CXXFLAGS CFLAGS LDFLAGS
-#
-#
-##CFLAGS="-march=native -mtune=native -Ofast -g0 -fmerge-all-constants"
-##LDFLAGS=""
-#
-#git reset --hard
-#git clean -fdx
-#git clean -fdx
-##git pull
-#cp -v cpu-miner.c.local-android cpu-miner.c
-#./autogen.sh
-#./configure NWITH_GETLINE=1 CPPFLAGS="$CPPFLAGS" CXXFLAGS="$CXXFLAGS" CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS"
-#make
-##make install
-#install -bv cpuminer ~/
-#
-#~/cpuminer
-##~/cpuminer &
-##cpid=$!
-##for k in $(seq 10) ; do
-##  sleep 30
-##  kill -0 $cpid
-##done
-##kill $cpid
-##wait $cpid || :
-##
-##make distclean
-##./autogen.sh
-##./configure NWITH_GETLINE=1 CPPFLAGS="$CPPFLAGS" CXXFLAGS="$CXXFLAGS" CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS"
-##make
-##strip --strip-all cpuminer
-##install -bv cpuminer ~/
-#
-
-
-
 
