@@ -1,6 +1,6 @@
 #! /bin/bash
 set -euvxo pipefail
-(( ! UID ))
+((   UID ))
 (( ! $#  ))
 
 INSTALL_DEPS=1
