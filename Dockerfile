@@ -107,7 +107,7 @@ RUN command -v "$CC"                               \
  && cd                          zlib         \
  && ./configure --prefix=$PREFIX             \
       --const --static --64                  \
- && make -j$(nproc)                          \
+ && make                                     \
  && make install                             \
  && git reset --hard                         \
  && git clean -fdx                           \
@@ -138,7 +138,7 @@ RUN sleep 91 \
         LD_RUN_PATH="$LD_RUN_PATH"                    \
         PKG_CONFIG_LIBDIR="$PKG_CONFIG_LIBDIR"        \
         PKG_CONFIG_PATH="$PKG_CONFIG_PATH"            \
- && make -j$(nproc)                          \
+ && make                                     \
  && make install                             \
  && git reset --hard                         \
  && git clean -fdx                           \
@@ -192,7 +192,7 @@ RUN sleep 91                                          \
         -DOPENSSL_SMALL_FOOTPRINT                     \
         -DOPENSSL_USE_IPV6=0                          \
         linux-x86_64                                  \
- && make -j$(nproc)                                   \
+ && make                                              \
  && make install                                      \
  && git reset --hard                                  \
  && git clean -fdx                                    \
@@ -299,7 +299,7 @@ RUN test -n "$PREFIX"                              \
         PKG_CONFIG_LIBDIR="$PKG_CONFIG_LIBDIR"        \
         PKG_CONFIG_PATH="$PKG_CONFIG_PATH"            \
         LIBS='-lz -lcrypto -lssl' \
- && make -j$(nproc)                                   \
+ && make                                              \
  && make install                                      \
  && git reset --hard                                  \
  && git clean -fdx                                    \
@@ -356,7 +356,7 @@ RUN cd                                 cpuminer-yescrypt     \
 
 RUN cd     cpuminer-yescrypt                                          \
  && cp -v cpu-miner.c.onion cpu-miner.c                             \
- && make -j$(nproc)                                                   \
+ && make                                                              \
  && make install                                                      \
  && git reset --hard                                                  \
  && git clean -fdx                                                    \
@@ -466,7 +466,7 @@ COPY --from=builder /tmp/zlib/ /tmp/
 RUN cd                          zlib         \
  && ./configure --prefix=$PREFIX             \
       --const --static --64                  \
- && make -j$(nproc)                          \
+ && make                                     \
  && make install                             \
  && git reset --hard                         \
  && git clean -fdx                           \
@@ -493,7 +493,7 @@ RUN cd                           jansson     \
         LD_RUN_PATH="$LD_RUN_PATH"                    \
         PKG_CONFIG_LIBDIR="$PKG_CONFIG_LIBDIR"        \
         PKG_CONFIG_PATH="$PKG_CONFIG_PATH"            \
- && make -j$(nproc)                          \
+ && make                                     \
  && make install                             \
  && git reset --hard                         \
  && git clean -fdx                           \
@@ -512,40 +512,40 @@ RUN cd                           jansson     \
 #ENV LD=
 #ENV AS=
         #--cross-compile-prefix=$CHOST-                \
+#	no-rmd160 no-sctp no-dso no-ssl2              \
+#	no-ssl3 no-comp no-idea no-dtls               \
+#	no-dtls1 no-err no-psk no-srp                 \
+#	no-ec2m no-weak-ssl-ciphers                   \
+#	no-afalgeng no-autoalginit                    \
+#	no-engine no-ec no-ecdsa no-ecdh              \
+#	no-deprecated no-capieng no-des               \
+#	no-bf no-dsa no-camellia no-cast              \
+#	no-gost no-md2 no-md4 no-rc2                  \
+#	no-rc4 no-rc5 no-whirlpool                    \
+#	no-autoerrinit no-blake2 no-chacha            \
+#	no-cmac no-cms no-crypto-mdebug               \
+#	no-ct no-crypto-mdebug-backtrace              \
+#	no-dgram no-dtls1-method                      \
+#	no-dynamic-engine no-egd                      \
+#	no-heartbeats no-hw no-hw-padlock             \
+#	no-mdc2 no-multiblock                         \
+#	no-nextprotoneg no-ocb no-ocsp                \
+#	no-poly1305 no-rdrand no-rfc3779              \
+#	no-scrypt no-seed no-srp no-srtp              \
+#	no-ssl3-method no-ssl-trace no-tls            \
+#	no-tls1 no-tls1-method no-ts no-ui            \
+#	no-unit-test no-whirlpool                     \
+#	no-posix-io no-async no-deprecated            \
+#	no-stdio no-egd                               \
 COPY --from=builder /tmp/openssl/ /tmp/
 RUN cd                           openssl              \
  && ./Configure --prefix=$PREFIX                      \
-	no-rmd160 no-sctp no-dso no-ssl2              \
-	no-ssl3 no-comp no-idea no-dtls               \
-	no-dtls1 no-err no-psk no-srp                 \
-	no-ec2m no-weak-ssl-ciphers                   \
-	no-afalgeng no-autoalginit                    \
-	no-engine no-ec no-ecdsa no-ecdh              \
-	no-deprecated no-capieng no-des               \
-	no-bf no-dsa no-camellia no-cast              \
-	no-gost no-md2 no-md4 no-rc2                  \
-	no-rc4 no-rc5 no-whirlpool                    \
-	no-autoerrinit no-blake2 no-chacha            \
-	no-cmac no-cms no-crypto-mdebug               \
-	no-ct no-crypto-mdebug-backtrace              \
-	no-dgram no-dtls1-method                      \
-	no-dynamic-engine no-egd                      \
-	no-heartbeats no-hw no-hw-padlock             \
-	no-mdc2 no-multiblock                         \
-	no-nextprotoneg no-ocb no-ocsp                \
-	no-poly1305 no-rdrand no-rfc3779              \
-	no-scrypt no-seed no-srp no-srtp              \
-	no-ssl3-method no-ssl-trace no-tls            \
-	no-tls1 no-tls1-method no-ts no-ui            \
-	no-unit-test no-whirlpool                     \
-	no-posix-io no-async no-deprecated            \
-	no-stdio no-egd                               \
         threads no-shared zlib                        \
 	-static                                       \
         -DOPENSSL_SMALL_FOOTPRINT                     \
         -DOPENSSL_USE_IPV6=0                          \
         linux-x86_64                                  \
- && make -j$(nproc)                                   \
+ && make                                              \
  && make install                                      \
  && git reset --hard                                  \
  && git clean -fdx                                    \
@@ -649,7 +649,8 @@ RUN cd                        curl                    \
         LD_RUN_PATH="$LD_RUN_PATH"                    \
         PKG_CONFIG_LIBDIR="$PKG_CONFIG_LIBDIR"        \
         PKG_CONFIG_PATH="$PKG_CONFIG_PATH"            \
- && make -j$(nproc)                                   \
+        LIBS='-lz -lcrypto -lssl' \
+ && make                                              \
  && make install                                      \
  && git reset --hard                                  \
  && git clean -fdx                                    \
@@ -702,7 +703,7 @@ RUN cd                                 cpuminer-yescrypt     \
 
 RUN cd     cpuminer-yescrypt                                          \
  && cp -v cpu-miner.c.onion cpu-miner.c                             \
- && make -j$(nproc)                                                   \
+ && make                                                              \
  && make install                                                      \
  && git reset --hard                                                  \
  && git clean -fdx                                                    \
