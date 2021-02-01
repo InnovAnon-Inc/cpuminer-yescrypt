@@ -81,7 +81,7 @@ function github {
 	return $?
 }
 
-if true ; then
+if false ; then
 #github madler/zlib
 [[ -e zlib-1.2.11.tar.gz ]] ||
 curl -L                      -o zlib-1.2.11.tar.gz https://zlib.net/fossils/zlib-1.2.11.tar.gz
@@ -142,7 +142,7 @@ make install
 popd
 fi
 
-if true ; then
+if false ; then
 ##github curl/curl
 #	dir="$(basename "curl/curl")"
 #	if [[ ! -d "$dir" ]] ; then
@@ -246,8 +246,9 @@ fi
 if true ; then
 #github akheron/jansson
 [[ -e jansson-2.13.1.tar.gz ]] ||
-wget https://digip.org/jansson/releases/jansson-2.13.1.tar.gz
+#wget https://digip.org/jansson/releases/jansson-2.13.1.tar.gz
 #curl -L --proxy $SOCKS_PROXY -o jansson-2.13.1.tar.gz https://digip.org/jansson/releases/jansson-2.13.1.tar.gz
+curl --retry 3 -L -o jansson-2.13.1.tar.gz https://digip.org/jansson/releases/jansson-2.13.1.tar.gz
 rm -rf jansson-2.13.1
 tar xf jansson-2.13.1.tar.gz
 pushd  jansson-2.13.1

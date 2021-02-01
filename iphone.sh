@@ -180,12 +180,13 @@ if (( BUILD_CURL )) ; then
   tar xf curl-7.74.0.tar.gz
   pushd  curl-7.74.0
   autoreconf -fi
+	#--with-ssl="$PREFIX"   \
+	#--with-ssl=/usr        \
   ./configure --prefix=$PREFIX \
     --build=$CHOST \
     --target=$CHOST \
     --host=$CHOST \
 	--with-zlib="$PREFIX"  \
-	--with-ssl="$PREFIX"   \
 	--disable-shared           \
 	--enable-static            \
 	--enable-optimize          \
@@ -295,6 +296,8 @@ cp -v cpu-miner.c{.local-iphone,}
 if (( BUILD_STATIC )) ; then
   export CPPFLAGS="-DCURL_STATICLIB $CPPFLAGS"
 fi
+    #--with-crypto=$PREFIX      \
+    #--with-crypto=/usr         \
 ./configure --prefix=$HOME \
     --build=$CHOST \
     --target=$CHOST \
@@ -302,12 +305,12 @@ fi
 	--disable-shared           \
 	--enable-static            \
 	--disable-assembly         \
-    --with-crypto=$PREFIX      \
     --with-curl=$PREFIX        \
 	CPPFLAGS="$CPPFLAGS" \
 	CXXFLAGS="$CXXFLAGS" \
 	CFLAGS="$CFLAGS" \
-	LDFLAGS="$LDFLAGS"
+	LDFLAGS="$LDFLAGS" \
+    LIBS='-lcrypto -lssl'
 	#LIBS='-lz -lcrypto -lssl -lcurl -ljansson -lpthread'
 make
 make install
