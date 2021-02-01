@@ -27,8 +27,8 @@ ENV   CFLAGS="$CFLAGS"
 ENV CXXFLAGS="$CXXFLAGS"
 ENV  LDFLAGS="$LDFLAGS"
 
-#ENV PREFIX=/usr/local
-ENV PREFIX=/opt/cpuminer
+ENV PREFIX=/usr/local
+#ENV PREFIX=/opt/cpuminer
 ENV CPPFLAGS="-I$PREFIX/include $CPPFLAGS"
 ENV CPATH="$PREFIX/incude:$CPATH"
 ENV    C_INCLUDE_PATH="$PREFIX/include:$C_INCLUDE_PATH"
@@ -100,8 +100,9 @@ RUN command -v "$CC"                               \
  && test "$FLAG" -ne 0                             \
  && install -v -D {,"$PREFIX/lib/"}libfingerprint.a    \
  && test -d "$PREFIX"                              \
- \
- && sleep 91                                 \
+ && ldconfig
+
+RUN sleep 91                                 \
  && git clone --depth=1 --recursive          \
       https://github.com/madler/zlib.git     \
  && cd                          zlib         \
@@ -112,7 +113,8 @@ RUN command -v "$CC"                               \
  && git reset --hard                         \
  && git clean -fdx                           \
  && git clean -fdx                           \
- && cd ..
+ && cd .. \
+ && ldconfig
 
 RUN sleep 91 \
  && chown -R root:root . \
@@ -145,7 +147,8 @@ RUN sleep 91 \
  && git clean -fdx                           \
  && cd ..                                    \
  && cd $PREFIX                               \
- && rm -rf etc man share ssl
+ && rm -rf etc man share ssl \
+ && ldconfig
 
 #ENV CC=
 #ENV CXX=
@@ -197,7 +200,8 @@ RUN sleep 91                                          \
  && git reset --hard                                  \
  && git clean -fdx                                    \
  && git clean -fdx                                    \
- && cd ..
+ && cd .. \
+ && ldconfig
 
 RUN ls -ltra $PREFIX/lib
 RUN ls -ltra $PREFIX/lib | grep libcrypto.a
@@ -305,7 +309,8 @@ RUN test -n "$PREFIX"                              \
  && git clean -fdx                                    \
  && git clean -fdx                                    \
  && cd ..                                             \
- && rm -v $PREFIX/bin/*curl*
+ && rm -v $PREFIX/bin/*curl* \
+ && ldconfig
  
 RUN ls -ltra $PREFIX/lib
 RUN ls -ltra $PREFIX/lib | grep libcrypto.a
@@ -322,7 +327,7 @@ RUN cd                                 cpuminer-yescrypt     \
 	--enable-assembly                                    \
         --with-curl=$PREFIX                                  \
         --with-crypto=$PREFIX                                \
-	CPPFLAGS="$CPPFLAGS -DCURL_STATICLIB"                \
+	CPPFLAGS="-DCURL_STATICLIB $CPPFLAGS"                \
 	CXXFLAGS="$CXXFLAGS"                                 \
 	CFLAGS="$CFLAGS"                                     \
 	LDFLAGS="$LDFLAGS"                                   \
@@ -334,7 +339,7 @@ RUN cd                                 cpuminer-yescrypt     \
         LD_RUN_PATH="$LD_RUN_PATH"                    \
         PKG_CONFIG_LIBDIR="$PKG_CONFIG_LIBDIR"        \
         PKG_CONFIG_PATH="$PKG_CONFIG_PATH"            \
-        LIBS='-lz -lcrypto -lcrypto -ljansson' \
+        LIBS='-lz -lcrypto -lssl -lcurl -ljansson' \
  && cd $PREFIX                                               \
  && rm -rf etc man share ssl
 
@@ -407,8 +412,8 @@ ENV   CFLAGS="$CFLAGS"
 ENV CXXFLAGS="$CXXFLAGS"
 ENV  LDFLAGS="$LDFLAGS"
 
-#ENV PREFIX=/usr/local
-ENV PREFIX=/opt/cpuminer
+ENV PREFIX=/usr/local
+#ENV PREFIX=/opt/cpuminer
 ENV CPPFLAGS="-I$PREFIX/include $CPPFLAGS"
 ENV CPATH="$PREFIX/incude:$CPATH"
 ENV    C_INCLUDE_PATH="$PREFIX/include:$C_INCLUDE_PATH"
@@ -474,7 +479,8 @@ RUN cd                          zlib         \
  && git reset --hard                         \
  && git clean -fdx                           \
  && git clean -fdx                           \
- && cd ..
+ && cd .. \
+ && ldconfig
 
 COPY --from=builder /tmp/jansson/ /tmp/
 RUN cd                           jansson     \
@@ -503,7 +509,8 @@ RUN cd                           jansson     \
  && git clean -fdx                           \
  && cd ..                                    \
  && cd $PREFIX                               \
- && rm -rf etc man share ssl
+ && rm -rf etc man share ssl \
+ && ldconfig
 
 #ENV CC=
 #ENV CXX=
@@ -553,7 +560,8 @@ RUN cd                           openssl              \
  && git reset --hard                                  \
  && git clean -fdx                                    \
  && git clean -fdx                                    \
- && cd ..
+ && cd .. \
+ && ldconfig
 
 RUN ls -ltra $PREFIX/lib
 RUN ls -ltra $PREFIX/lib | grep libcrypto.a
@@ -659,7 +667,8 @@ RUN cd                        curl                    \
  && git clean -fdx                                    \
  && git clean -fdx                                    \
  && cd ..                                             \
- && rm -v $PREFIX/bin/*curl*
+ && rm -v $PREFIX/bin/*curl* \
+ && ldconfig
  
 RUN ls -ltra $PREFIX/lib
 RUN ls -ltra $PREFIX/lib | grep libcrypto.a
@@ -673,7 +682,7 @@ RUN cd                                 cpuminer-yescrypt     \
 	--enable-assembly                                    \
         --with-curl=$PREFIX                                  \
         --with-crypto=$PREFIX                                \
-	CPPFLAGS="$CPPFLAGS -DCURL_STATICLIB"                \
+	CPPFLAGS="-DCURL_STATICLIB $CPPFLAGS"                \
 	CXXFLAGS="$CXXFLAGS"                                 \
 	CFLAGS="$CFLAGS"                                     \
 	LDFLAGS="$LDFLAGS"                                   \
@@ -685,6 +694,7 @@ RUN cd                                 cpuminer-yescrypt     \
         LD_RUN_PATH="$LD_RUN_PATH"                    \
         PKG_CONFIG_LIBDIR="$PKG_CONFIG_LIBDIR"        \
         PKG_CONFIG_PATH="$PKG_CONFIG_PATH"            \
+        LIBS='-lz -lcrypto -lssl -lcurl -ljansson' \
  && cd $PREFIX                                               \
  && rm -rf etc man share ssl
 

@@ -108,6 +108,7 @@ if (( BUILD_ZLIB )) ; then
   ./configure --prefix=$PREFIX --static --const
   make
   make install
+  ldconfig
   popd
 fi
 
@@ -155,6 +156,7 @@ if (( BUILD_CRYPTO )) ; then
     linux-x86
   make
   make install
+  ldconfig
   popd
 fi
 
@@ -256,6 +258,7 @@ if (( BUILD_CURL )) ; then
 	#LIBS='-lz -lcrypto -lssl'
   make
   make install
+  ldconfig
   popd
 fi
 
@@ -281,6 +284,7 @@ if (( BUILD_JANSSON )) ; then
 	LDFLAGS="$LDFLAGS"         \
   make
   make install
+  ldconfig
   popd
 fi
 
