@@ -372,8 +372,11 @@ RUN ln -sfv /usr/local/bin/cpuminer /usr/local/bin/support
 SHELL ["/usr/bin/bash", "-l", "-c"]
 ARG TEST
 ENV TEST=$TEST
-# TODO loooooooooong time
 RUN sleep 91
+# TODO loooooooooong time
+#RUN for k in $(seq 11) ; do \
+#      sleep 597        ;    \
+#    done
 
 
 

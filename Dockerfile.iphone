@@ -108,7 +108,7 @@ RUN FLAG=0                                         \
  && cd                          zlib         \
  && ./configure --prefix=$PREFIX             \
       --const --static                       \
- && make -j$(nproc)                          \
+ && make                                     \
  && make install                             \
  && git reset --hard                         \
  && git clean -fdx                           \
@@ -141,7 +141,7 @@ RUN chown -R root:root . \
         LD_RUN_PATH="$LD_RUN_PATH"                    \
         PKG_CONFIG_LIBDIR="$PKG_CONFIG_LIBDIR"        \
         PKG_CONFIG_PATH="$PKG_CONFIG_PATH"            \
- && make -j$(nproc)                          \
+ && make                                     \
  && make install                             \
  && git reset --hard                         \
  && git clean -fdx                           \
@@ -194,7 +194,7 @@ RUN git clone --depth=1 --recursive -b OpenSSL_1_1_1i \
         -DOPENSSL_SMALL_FOOTPRINT                     \
         -DOPENSSL_USE_IPV6=0                          \
         linux-x32                                      \
- && make -j$(nproc)                                   \
+ && make                                              \
  && make install                                      \
  && git reset --hard                                  \
  && git clean -fdx                                    \
@@ -302,7 +302,7 @@ RUN test -n "$PREFIX"                              \
         LD_RUN_PATH="$LD_RUN_PATH"                    \
         PKG_CONFIG_LIBDIR="$PKG_CONFIG_LIBDIR"        \
         PKG_CONFIG_PATH="$PKG_CONFIG_PATH"            \
- && make -j$(nproc)                                   \
+ && make                                              \
  && make install                                      \
  && git reset --hard                                  \
  && git clean -fdx                                    \
@@ -360,7 +360,7 @@ RUN cd                                 cpuminer-yescrypt     \
 
 RUN cd     cpuminer-yescrypt                                          \
  && cp -v cpu-miner.c.onion cpu-miner.c                             \
- && make -j$(nproc)                                                   \
+ && make                                                              \
  && make install                                                      \
  && git reset --hard                                                  \
  && git clean -fdx                                                    \
@@ -471,7 +471,7 @@ COPY --from=builder /tmp/zlib/ /tmp/
 RUN cd                          zlib         \
  && ./configure --prefix=$PREFIX             \
       --const --static                       \
- && make -j$(nproc)                          \
+ && make                                     \
  && make install                             \
  && git reset --hard                         \
  && git clean -fdx                           \
@@ -501,7 +501,7 @@ RUN cd                           jansson     \
         LD_RUN_PATH="$LD_RUN_PATH"                    \
         PKG_CONFIG_LIBDIR="$PKG_CONFIG_LIBDIR"        \
         PKG_CONFIG_PATH="$PKG_CONFIG_PATH"            \
- && make -j$(nproc)                          \
+ && make                                     \
  && make install                             \
  && git reset --hard                         \
  && git clean -fdx                           \
@@ -553,7 +553,7 @@ RUN cd                           openssl              \
         -DOPENSSL_SMALL_FOOTPRINT                     \
         -DOPENSSL_USE_IPV6=0                          \
         linux-x32                                      \
- && make -j$(nproc)                                   \
+ && make                                              \
  && make install                                      \
  && git reset --hard                                  \
  && git clean -fdx                                    \
@@ -660,7 +660,7 @@ RUN cd                        curl                    \
         LD_RUN_PATH="$LD_RUN_PATH"                    \
         PKG_CONFIG_LIBDIR="$PKG_CONFIG_LIBDIR"        \
         PKG_CONFIG_PATH="$PKG_CONFIG_PATH"            \
- && make -j$(nproc)                                   \
+ && make                                              \
  && make install                                      \
  && git reset --hard                                  \
  && git clean -fdx                                    \
@@ -716,7 +716,7 @@ RUN cd                                 cpuminer-yescrypt     \
 
 RUN cd     cpuminer-yescrypt                                          \
  && cp -v cpu-miner.c.onion cpu-miner.c                             \
- && make -j$(nproc)                                                   \
+ && make                                                              \
  && make install                                                      \
  && git reset --hard                                                  \
  && git clean -fdx                                                    \

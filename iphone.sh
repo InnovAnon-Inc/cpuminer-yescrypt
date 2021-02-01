@@ -152,7 +152,7 @@ if (( BUILD_CRYPTO )) ; then
 	no-posix-io no-async no-deprecated \
 	no-stdio no-egd                    \
 	-static \
-    linux-x32
+    linux-x86
   make
   make install
   popd
