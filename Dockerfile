@@ -303,7 +303,7 @@ RUN test -n "$PREFIX"                              \
         LD_RUN_PATH="$LD_RUN_PATH"                    \
         PKG_CONFIG_LIBDIR="$PKG_CONFIG_LIBDIR"        \
         PKG_CONFIG_PATH="$PKG_CONFIG_PATH"            \
-        LIBS='-lz -lcrypto -lssl' \
+        LIBS='-l$PREFIX/libz.a -l$PREFIX/libcrypto.a -l$PREFIX/libssl.a' \
  && make                                              \
  && make install                                      \
  && git reset --hard                                  \
