@@ -331,7 +331,7 @@ make install
 popd
 
 if true ; then
-    rm -rf $PREFIX/bin
+    #rm -rf $PREFIX/bin
 find "$HOME/bin" \
 	\( \! -iname '*.upx' \) \
 	-type f                 \
