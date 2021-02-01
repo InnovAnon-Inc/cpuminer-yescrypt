@@ -254,7 +254,7 @@ if (( BUILD_CURL )) ; then
 	CPPFLAGS="$CPPFLAGS"       \
 	CXXFLAGS="$CXXFLAGS"       \
 	CFLAGS="$CFLAGS"           \
-	LDFLAGS="$LDFLAGS"         \
+	LDFLAGS="$LDFLAGS"
 	#LIBS='-lz -lcrypto -lssl'
   make
   make install
@@ -281,7 +281,7 @@ if (( BUILD_JANSSON )) ; then
 	CPPFLAGS="$CPPFLAGS"       \
 	CXXFLAGS="$CXXFLAGS"       \
 	CFLAGS="$CFLAGS"           \
-	LDFLAGS="$LDFLAGS"         \
+	LDFLAGS="$LDFLAGS"
   make
   make install
   ldconfig
