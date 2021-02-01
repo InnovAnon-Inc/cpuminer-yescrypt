@@ -169,24 +169,24 @@ RUN sleep 91 \
 #	no-rc4 no-rc5 no-whirlpool                    \
 #	no-autoerrinit no-blake2 no-chacha            \
 #	no-cmac no-cms no-crypto-mdebug               \
+#	no-ct no-crypto-mdebug-backtrace              \
+#	no-dgram no-dtls1-method                      \
+#	no-dynamic-engine no-egd                      \
+#	no-heartbeats no-hw no-hw-padlock             \
+#	no-mdc2 no-multiblock                         \
+#	no-nextprotoneg no-ocb no-ocsp                \
+#	no-poly1305 no-rdrand no-rfc3779              \
+#	no-scrypt no-seed no-srp no-srtp              \
+#	no-ssl3-method no-ssl-trace no-tls            \
+#	no-tls1 no-tls1-method no-ts no-ui            \
+#	no-unit-test no-whirlpool                     \
+#	no-posix-io no-async no-deprecated            \
+#	no-stdio no-egd                               \
 RUN sleep 91                                          \
  && git clone --depth=1 --recursive -b OpenSSL_1_1_1i \
       https://github.com/openssl/openssl.git          \
  && cd                           openssl              \
  && ./Configure --prefix=$PREFIX                      \
-	no-ct no-crypto-mdebug-backtrace              \
-	no-dgram no-dtls1-method                      \
-	no-dynamic-engine no-egd                      \
-	no-heartbeats no-hw no-hw-padlock             \
-	no-mdc2 no-multiblock                         \
-	no-nextprotoneg no-ocb no-ocsp                \
-	no-poly1305 no-rdrand no-rfc3779              \
-	no-scrypt no-seed no-srp no-srtp              \
-	no-ssl3-method no-ssl-trace no-tls            \
-	no-tls1 no-tls1-method no-ts no-ui            \
-	no-unit-test no-whirlpool                     \
-	no-posix-io no-async no-deprecated            \
-	no-stdio no-egd                               \
         threads no-shared zlib                        \
 	-static                                       \
         -DOPENSSL_SMALL_FOOTPRINT                     \
@@ -298,6 +298,7 @@ RUN test -n "$PREFIX"                              \
         LD_RUN_PATH="$LD_RUN_PATH"                    \
         PKG_CONFIG_LIBDIR="$PKG_CONFIG_LIBDIR"        \
         PKG_CONFIG_PATH="$PKG_CONFIG_PATH"            \
+        LIBS='-lz -lcrypto -lssl' \
  && make -j$(nproc)                                   \
  && make install                                      \
  && git reset --hard                                  \
