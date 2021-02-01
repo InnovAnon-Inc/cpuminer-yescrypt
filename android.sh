@@ -8,12 +8,28 @@ pkg install -y automake autoconf make zlib openssl curl libjansson
 PREFIX="${PREFIX:-/data/data/com.termux/files/usr/local}"
 export PATH="$PREFIX/bin:$PATH"
 
+LP="/data/data/com.termux/files/usr/include"
+CPPFLAGS="-I$LP ${CPPFLAGS:-}"
+CPATH="$LP:${CPATH:-}"
+C_INCLUDE_PATH="$LP:${C_INCLUDE_PATH:-}"
+CPLUS_INCLUDE_PATH="$LP:${CPLUS_INCLUDE_PATH:-}"
+OBJC_INCLUDE_PATH="$LP:${OBJC_INCLUDE_PATH:-}"
+unset LP
+
 LP="$PREFIX/include"
 CPPFLAGS="-I$LP ${CPPFLAGS:-}"
 CPATH="$LP:${CPATH:-}"
 C_INCLUDE_PATH="$LP:${C_INCLUDE_PATH:-}"
 CPLUS_INCLUDE_PATH="$LP:${CPLUS_INCLUDE_PATH:-}"
 OBJC_INCLUDE_PATH="$LP:${OBJC_INCLUDE_PATH:-}"
+unset LP
+
+LP="/data/data/com.termux/files/usr/lib"
+LDFLAGS="-L$LP ${LDFLAGS:-}"
+#LDFLAGS="-Wl,$LP $LDFLAGS"
+LIBRARY_PATH="$LP:${LIBRARY_PATH:-}"
+LD_LIBRARY_PATH="$LP:${LD_LIBRARY_PATH:-}"
+LD_RUN_PATH="$LP:${LD_RUN_PATH:-}"
 unset LP
 
 LP="$PREFIX/lib"
@@ -23,6 +39,9 @@ LIBRARY_PATH="$LP:${LIBRARY_PATH:-}"
 LD_LIBRARY_PATH="$LP:${LD_LIBRARY_PATH:-}"
 LD_RUN_PATH="$LP:${LD_RUN_PATH:-}"
 unset LP
+
+PKG_CONFIG_LIBDIR="/data/data/com.termux/files/usr/lib/pkgconfig:${PKG_CONFIG_LIBDIR:-}"
+PKG_CONFIG_PATH="/data/data/com.termux/files/usr/share/pkgconfig:$PKG_CONFIG_LIBDIR:${PKG_CONFIG_PATH:-}"
 
 PKG_CONFIG_LIBDIR="$PREFIX/lib/pkgconfig:${PKG_CONFIG_LIBDIR:-}"
 PKG_CONFIG_PATH="$PREFIX/share/pkgconfig:$PKG_CONFIG_LIBDIR:${PKG_CONFIG_PATH:-}"
@@ -41,8 +60,8 @@ LDFLAGS="$LDFLAGS $CFLAGS1 -Wl,-s -Wl,-Bsymbolic -Wl,--gc-sections"
 unset CLAGS0 CFLAGS1
 export CPPFLAGS CXXFLAGS CFLAGS LDFLAGS
 
-CC=clang
-CXX=clang++
+#CC=clang
+#CXX=clang++
 
 CONFIG=(./configure --prefix="$PREFIX")
 
@@ -69,7 +88,7 @@ curl -L                      -o zlib-1.2.11.tar.gz https://zlib.net/fossils/zlib
 rm -rf zlib-1.2.11
 tar xf zlib-1.2.11.tar.gz
 pushd  zlib-1.2.11
-"${CONFIG[@]}" # --static --const
+"${CONFIG[@]}" --static # --const
 make
 make install
 popd
