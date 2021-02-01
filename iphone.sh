@@ -298,6 +298,7 @@ if (( BUILD_STATIC )) ; then
 fi
     #--with-crypto=$PREFIX      \
     #--with-crypto=/usr         \
+    #--with-curl=$PREFIX        \
 ./configure --prefix=$HOME \
     --build=$CHOST \
     --target=$CHOST \
@@ -305,12 +306,11 @@ fi
 	--disable-shared           \
 	--enable-static            \
 	--disable-assembly         \
-    --with-curl=$PREFIX        \
 	CPPFLAGS="$CPPFLAGS" \
 	CXXFLAGS="$CXXFLAGS" \
 	CFLAGS="$CFLAGS" \
 	LDFLAGS="$LDFLAGS" \
-    LIBS='-lcrypto -lssl'
+    LIBS='-lz -lcrypto -lssl -lcurl'
 	#LIBS='-lz -lcrypto -lssl -lcurl -ljansson -lpthread'
 make
 make install
