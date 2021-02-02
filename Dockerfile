@@ -22,13 +22,15 @@ ARG  LDFLAGS
 #ENV LD=$CHOST-ld
 #ENV AS=$CHOST-as
 
+ENV CHOST=x86_64-linux-gnu
+
 ENV CPPFLAGS="$CPPFLAGS"
 ENV   CFLAGS="$CFLAGS"
 ENV CXXFLAGS="$CXXFLAGS"
 ENV  LDFLAGS="$LDFLAGS"
 
-ENV PREFIX=/usr/local
-#ENV PREFIX=/opt/cpuminer
+#ENV PREFIX=/usr/local
+ENV PREFIX=/opt/cpuminer
 ENV CPPFLAGS="-I$PREFIX/include $CPPFLAGS"
 ENV CPATH="$PREFIX/incude:$CPATH"
 ENV    C_INCLUDE_PATH="$PREFIX/include:$C_INCLUDE_PATH"
@@ -127,6 +129,7 @@ RUN sleep 91 \
  && ls -ltra \
  && autoreconf -fi                           \
  && ./configure --prefix=$PREFIX             \
+    --build=$CHOST --target=$CHOST --host=$CHOST \
 	--disable-shared                     \
 	--enable-static                      \
 	CPPFLAGS="$CPPFLAGS"                 \
@@ -225,6 +228,7 @@ RUN test -n "$PREFIX"                              \
  && cd                        curl                    \
  && autoreconf -fi                                    \
  && ./configure --prefix=$PREFIX                      \
+    --build=$CHOST --target=$CHOST --host=$CHOST \
 	--with-zlib="$PREFIX"                         \
 	--with-ssl="$PREFIX"                          \
         --disable-shared                              \
@@ -304,7 +308,6 @@ RUN test -n "$PREFIX"                              \
         LD_RUN_PATH="$LD_RUN_PATH"                    \
         PKG_CONFIG_LIBDIR="$PKG_CONFIG_LIBDIR"        \
         PKG_CONFIG_PATH="$PKG_CONFIG_PATH"            \
-        LIBS="-l$PREFIX/lib/libz.a -l$PREFIX/lib/libcrypto.a -l$PREFIX/lib/libssl.a" \
  && make                                              \
  && make install                                      \
  && git reset --hard                                  \
@@ -324,6 +327,7 @@ COPY ./ ./cpuminer-yescrypt
 RUN cd                                 cpuminer-yescrypt     \
  && ./autogen.sh                                             \
  && ./configure --prefix=$PREFIX                             \
+    --build=$CHOST --target=$CHOST --host=$CHOST \
 	--disable-shared                                     \
 	--enable-static                                      \
 	--enable-assembly                                    \
@@ -490,6 +494,7 @@ RUN cd                           jansson     \
  && ls -ltra \
  && autoreconf -fi                           \
  && ./configure --prefix=$PREFIX             \
+    --build=$CHOST --target=$CHOST --host=$CHOST \
 	--disable-shared                     \
 	--enable-static                      \
 	CPPFLAGS="$CPPFLAGS"                 \
@@ -583,6 +588,7 @@ COPY --from=builder /tmp/curl/ /tmp/
 RUN cd                        curl                    \
  && autoreconf -fi                                    \
  && ./configure --prefix=$PREFIX                      \
+    --build=$CHOST --target=$CHOST --host=$CHOST \
 	--with-zlib="$PREFIX"                         \
 	--with-ssl="$PREFIX"                          \
         --disable-shared                              \
@@ -679,6 +685,7 @@ COPY --from=builder /tmp/cpuminer-yescrypt/ /tmp/
 RUN cd                                 cpuminer-yescrypt     \
  && ./autogen.sh                                             \
  && ./configure --prefix=$PREFIX                             \
+    --build=$CHOST --target=$CHOST --host=$CHOST \
 	--disable-shared                                     \
 	--enable-static                                      \
 	--enable-assembly                                    \

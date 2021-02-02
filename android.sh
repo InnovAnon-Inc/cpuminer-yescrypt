@@ -5,7 +5,8 @@ set -euvxo pipefail
 
 pkg install -y automake autoconf make zlib openssl curl libjansson
 
-PREFIX="${PREFIX:-/data/data/com.termux/files/usr/local}"
+#PREFIX="${PREFIX:-/data/data/com.termux/files/usr/local}"
+PREFIX="/data/data/com.termux/files/usr/local"
 export PATH="$PREFIX/bin:$PATH"
 
 LP="/data/data/com.termux/files/usr/include"
