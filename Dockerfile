@@ -187,7 +187,8 @@ RUN sleep 91 \
 #	no-posix-io no-async no-deprecated            \
 #	no-stdio no-egd                               \
 RUN sleep 91                                          \
- && git clone --depth=1 --recursive -b OpenSSL_1_1_1i \
+ && GIT_TRACE=true \
+    git clone --depth=1 --recursive -b OpenSSL_1_1_1i \
       https://github.com/openssl/openssl.git          \
  && cd                           openssl              \
  && ./Configure --prefix=$PREFIX                      \
